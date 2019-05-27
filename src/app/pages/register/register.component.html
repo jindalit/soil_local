@@ -1,0 +1,164 @@
+<div class="user_register">
+    <div>
+
+        <mat-toolbar>
+
+            <mat-toolbar-row>
+                <span class="logo">
+                    <img src="assets/images/logo.png">
+                </span>
+                <span class="head_let">
+                    <h1>Soil Protection</h1>
+                </span>
+
+                <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+                    <mat-icon aria-label="Side nav toggle icon"> {{ 'menu' | translate }}
+                    </mat-icon>
+                </button>
+                <span fxFlex></span>
+                &nbsp;
+
+
+                <div class="menu_div">
+
+                    <div class="mn">
+                        <button mat-button [matMenuTriggerFor]="lang">
+                            <mat-icon>language</mat-icon>{{ 'language' | translate }}
+                        </button>
+                        <mat-menu #lang="matMenu">
+
+                            <button (click)="setLang('tn')" mat-menu-item>{{ 'tamil' | translate }}</button>
+                            <button (click)="setLang('en')" mat-menu-item>{{ 'english' | translate }}</button>
+                        </mat-menu>
+
+                    </div>
+
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+    <div class="register">
+        <h1>{{'userregister' | translate}}</h1>
+        <form ngNativeValidate>
+            <div class="page" *ngIf="currentPage  ==1 ">
+                <div>
+                    <label>{{'registrationType' | translate}}</label>
+                    <select required [(ngModel)]="selectedType" name="registrationType">
+                        <option *ngFor="let register of registrationType" [value]="register.id">{{register.name}}</option>
+                    </select>
+                </div>
+                <div>
+
+                    <label>{{'userName' | translate}}</label>
+                    <input type="text" [(ngModel)]="user.name" name="name" autocomplete="off" required>
+                </div>
+                <div>
+                    <label>{{'email' | translate}}</label>
+                    <input type="email" [(ngModel)]="user.email" name="email" autocomplete="off" [required]="selectedType =='FPO'">
+                </div>
+                <div>
+                    <label>{{'mobile' | translate}}</label>
+                    <input type="text" [(ngModel)]="user.mobile" name="mobile" autocomplete="off" required>
+                </div>
+                <div>
+                    <label>{{'gender' | translate}}</label>
+                    <input type="radio" [(ngModel)]="user.gender" name="gender" value="Male"><span>Male</span>
+                    <input type="radio" [(ngModel)]="user.gender" name="gender" value="Female"><span>Female</span>
+                </div>
+                <div>
+                    <label>{{'password' | translate}}</label>
+                    <input type="password" [(ngModel)]="user.password" name="password" autocomplete="off" value="">
+                </div>
+                <div>
+                    <label>{{'repassword' | translate}}</label>
+                    <input type="password" [(ngModel)]="repassword" name="password" autocomplete="off" value="">
+                </div>
+            </div>
+            <div class="page" *ngIf="currentPage == 2">
+                <div>
+
+                    <label>{{'country' | translate}}</label>
+                    <select [(ngModel)]="user.Address.country" name="country">
+                        <option *ngFor="let country of addressData.Country" [value]="country.code">{{country.name}}</option>
+                    </select>
+
+                </div>
+                <div>
+                    <label>{{'state' | translate}}</label>
+                    <select [(ngModel)]="user.Address.state" name="state" (change)="callDistrict()" required>
+                        <option *ngFor="let state of addressData.states" [value]="state.code">{{state.name}}</option>
+                    </select>
+                </div>
+
+
+
+                <div>
+                    <label>{{'district' | translate}}</label>
+
+                    <select [(ngModel)]="user.Address.district" name="district" (change)="callBlock()">
+                        <option *ngFor="let district of addressData.district" [value]="district.code">{{district.name}}</option>
+                    </select>
+
+                </div>
+                <div>
+
+                    <label>{{'block' | translate}}</label>
+                    <select [(ngModel)]="user.Address.block" name="block" (change)="callgramPanchayat()">
+                        <option *ngFor="let block of addressData.blocks" [value]="block.code">{{block.name}}</option>
+                    </select>
+
+                </div>
+                <div>
+                    <label>{{'gramPanchayat' | translate}}</label>
+                    <select [(ngModel)]="user.Address.gramPanchayat" name="gramPanchayat" (change)="callVillage()">
+                        <option *ngFor="let gramPanchayat of addressData.gramPanchayat" [value]="gramPanchayat.code">{{gramPanchayat.name}}</option>
+                    </select>
+
+
+                </div>
+                <div>
+
+                    <label>{{'village' | translate}}</label>
+                    <select [(ngModel)]="user.Address.village" name="village">
+                        <option *ngFor="let village of addressData.village" [value]="village.code">{{village.name}}</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="page" *ngIf="currentPage == 3">
+                <div>
+
+                    <label>{{'postalcode' | translate}}</label>
+                    <input type="text" [(ngModel)]="user.Address.postalcode" name="postalcode" required autocomplete="off">
+                </div>
+                <div>
+                    <label>{{'doorNo' | translate}}</label>
+                    <input type="text" [(ngModel)]="user.Address.doorNo" name="doorNo" autocomplete="off">
+                </div>
+
+                <div>
+
+                    <label>{{'landmark' | translate}}</label>
+                    <input type="text" [(ngModel)]="user.Address.landmark" name="landmark" autocomplete="off">
+                </div>
+                <div>
+                    <label>{{'street' | translate}}</label>
+                    <input type="text" [(ngModel)]="user.street" name="street" autocomplete="off">
+
+                </div>
+            </div>
+            <div class="action-btn">
+                <div class="arrow prev" *ngIf="currentPage == 2 || currentPage == 3" (click)="validateMandatory(currentPage-1);"><i class="fas fa-angle-left"></i>
+                    Prev</div>
+                <div class="arrow next" *ngIf="currentPage == 1 || currentPage == 2" (click)="validateMandatory(currentPage+1);">Next <i
+                        class="fas fa-angle-right"></i></div>
+                <div class="arrow next" *ngIf="currentPage == 3" (click)="registerUser()">Save </div>
+            </div>
+            <div class="text-center footer"><button mat-button color="primary" (click)="backToLogin()" class="btn_rad_clr"><i class="fas fa-arrow-left"></i> Back
+                    to Login</button>
+                <!-- <button type="submit" mat-button color="primary" (click)="registerUser()" class="btn_rad_clr">Register
+                    User</button> -->
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,256 @@
+<mat-card class="cd" *ngIf="!isPayment">
+
+  <mat-card-title class="cd_header">
+    Over Due
+  </mat-card-title>
+  <div class="example-header" fxLayout="row">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+
+  <div class="example-container mat-elevation-z8">
+
+    <mat-table [dataSource]="dataSource" matSort>
+
+
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="invoiceNo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> #Invoice </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="invoiceNo"> {{datafounder(row.invoiceNo)}} </mat-cell>
+      </ng-container>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="createdOn">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="createdOn" (click)='goto_user_info(row)'>
+          {{datafounder(utc_to_date(datafounder(row.createdOn)))}} </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="customerName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="customerName"> {{datafounder(row.customerName)}} </mat-cell>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="totalAmount">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="totalAmount"> {{datafounder(row.totalAmount)}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="received">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Received </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{datafounder(payment_calc(user.payments))}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="pending">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Pending </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{datafounder(user.totalAmount - datafounder2(payment_calc(user.payments)))}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="duedays">
+        <mat-header-cell *matHeaderCellDef> Overdue days </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{datafounder(cmn_ser.Get_date_difference(user.createdOn))}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let user"> <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="doPayment(user,$event)">Do Payment</button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</mat-card>
+<div *ngIf="isPayment">
+
+  <mat-card class="example-card marg_top_20 cd4">
+    <mat-card-header>
+      Payment Information
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="Payment_info_form">
+        <mat-grid-list cols="3" rowHeight="60px">
+          <mat-grid-tile><b>Customer Name:</b> {{customerName}}</mat-grid-tile>
+          <mat-grid-tile><b>Customer Type:</b> {{customerType}}</mat-grid-tile>
+          <mat-grid-tile><b>Pending Amount:</b> {{pendingAmount}}</mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="3" rowHeight="60px">
+
+          <mat-grid-tile>
+            <mat-form-field appearance="outline" style="width:100%;margin:5px">
+              <mat-select placeholder="Select Payment Method" formControlName="Sale_pay_mod" [(value)]="pay_mod"
+                (selectionChange)="slect_payment_mode()">
+                <mat-option value="CASH">Cash</mat-option>
+                <mat-option value="CHEQUE">CHEQUE</mat-option>
+                <mat-option value="NB">Net banking</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+
+            <mat-form-field appearance="outline" style="width:100%;margin:5px">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="Sale_pay_name" [(ngModel)]="paymentData.name">
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-form-field appearance="outline" style="width:100%;margin:5px">
+              <mat-label>Amount</mat-label>
+              <input matInput type="number" formControlName="Sale_pay_amount" [(ngModel)]="paymentData.amount">
+            </mat-form-field>
+          </mat-grid-tile>
+
+
+
+          <div class="CASH" *ngIf="CASH">
+
+
+
+
+
+          </div>
+
+          <div class="CHEQUE" *ngIf="CHEQUE">
+           
+            <mat-grid-tile>
+              <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                <mat-label> CHEQUE No. </mat-label>
+                <input matInput formControlName="Sale_pay_cheq_no" [(ngModel)]="paymentData.checkNo">
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- <mat-grid-tile>
+                            <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                              <mat-label>Amount</mat-label>
+                              <input matInput  formControlName="Sale_pay_cheq_amount" [(ngModel)]="Model_cheque_amount" >         
+                              </mat-form-field>
+                            </mat-grid-tile> -->
+            <mat-grid-tile>
+              <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                <mat-label> CHEQUE Date </mat-label>
+                <!-- <input matInput formControlName="Sale_pay_cheq_date"   [(ngModel)]="Model_cheque_date" >    -->
+
+                <input matInput formControlName="Sale_pay_cheq_date" [(ngModel)]="paymentData.date"
+                  [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+              </mat-form-field>
+            </mat-grid-tile>
+
+
+            <!-- 
+                                <mat-grid-tile>
+                                    <label class="fileContainer">
+                                        Upload CHEQUE!
+                                        <input type="file"/>
+                                    </label>
+                                    </mat-grid-tile> -->
+          </div>
+
+
+
+          <div class="NB" *ngIf="NB">
+            <div *ngIf="NB1">
+              <mat-grid-tile [colspan]="breakpoint">
+                <span class="child_label">ULB Banking Information</span>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                  <mat-label>Reference ID</mat-label>
+                  <input matInput formControlName="Sale_pay_net_ulb_refid" [(ngModel)]="paymentData.referenceId" readonly>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+
+                <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                  <mat-label>Account No.</mat-label>
+                  <input matInput formControlName="Sale_pay_net_ulb_accno" [(ngModel)]="paymentData.accno" readonly>
+                </mat-form-field>
+              </mat-grid-tile>
+
+              <!-- <mat-grid-tile>
+                                  <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                                    <mat-label>Amount</mat-label>
+                                    <input matInput  formControlName="Sale_pay_net_amount" [(ngModel)]="Model_net_amount" >         
+                                    </mat-form-field>
+                                  </mat-grid-tile> -->
+
+              <mat-grid-tile>
+                <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                  <mat-label>IFSC Code</mat-label>
+                  <input matInput formControlName="Sale_pay_net_ulb_ifsc" [(ngModel)]="paymentData.ifscCode" readonly>
+                </mat-form-field>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                  <mat-label>Branch</mat-label>
+                  <input matInput formControlName="Sale_pay_net_ulb_branch" [(ngModel)]="paymentData.branch" readonly>
+                </mat-form-field>
+              </mat-grid-tile>
+            </div>
+
+            <mat-grid-tile [colspan]="breakpoint">
+              <span class="child_label">Customer Banking Information</span>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                <mat-label>Reference ID</mat-label>
+                <input matInput formControlName="Sale_pay_net_ulb_refid" [(ngModel)]="paymentData.referenceId">
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+
+              <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                <mat-label>Account No.</mat-label>
+                <input matInput formControlName="Sale_pay_net_cust_accno" [(ngModel)]="paymentData.accno">
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                <mat-label>IFSC Code</mat-label>
+                <input matInput formControlName="Sale_pay_net_cust_ifsc" [(ngModel)]="paymentData.ifsc">
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field appearance="outline" style="width:100%;margin:5px">
+                <mat-label>Branch</mat-label>
+                <input matInput formControlName="Sale_pay_net_cust_branch" [(ngModel)]="paymentData.branch">
+              </mat-form-field>
+            </mat-grid-tile>
+
+
+
+          </div>
+        </mat-grid-list>
+        <mat-grid-list cols="1" rowHeight="60px">
+          <mat-grid-tile>
+            <button mat-raised-button style="float:right ; margin-right:20px" (click)="isPayment = false">Back</button>
+            <button mat-raised-button color="accent" style="float:right ; margin-right:20px"
+              (click)="makePayment()">Make Payment</button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </form>
+
+    </mat-card-content>
+
+  </mat-card>
+</div>

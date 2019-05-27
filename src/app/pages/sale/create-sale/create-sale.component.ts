@@ -1,0 +1,900 @@
+import { Product } from './../../../shared/models/product.model';
+import { Component, OnInit, NgZone, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
+import { HttpClient } from '@angular/common/http'
+
+import { ApiService } from '../../../services/api.service';
+import { LocaldataService } from '../../../services/localdata.service';
+import { CommonService } from '../../../services/common.service';
+
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { take } from 'rxjs/operators';
+import { forEach } from '@angular/router/src/utils/collection';
+
+import Swal from 'sweetalert2';
+
+
+
+
+@Component({
+  selector: 'app-create-sale',
+  templateUrl: './create-sale.component.html',
+  styleUrls: ['./create-sale.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
+})
+export class CreateSaleComponent implements OnInit {
+
+
+  NB1 = false;
+
+  //Create sale variables
+  Model_Sale_customerId;
+  Model_Sale_customerType;
+  Model_Sale_shippingaddress;
+
+  Company_address;
+  address:any={};
+  selected_address;
+
+
+
+
+
+
+  //user_details_from service
+  CASH = false;
+  CHEQUE = false;
+  NB = false;
+  farmer;
+  ulb;
+  fpo;
+  Local_Loggedin_user_info;
+  farmer_type = false;
+  fpo_type = false;
+  user_type;
+
+  vendor_id;
+
+  Sale_prefill;
+  Pur_vendor;
+  add_purchase_form: FormGroup;
+  breakpoint: number;
+  title = 'app';
+  Fill_sale_table_form: FormGroup;
+  public btn_bool_sv;
+  public btn_bool_up;
+
+  //
+
+
+  //formgroup//
+  Customer_info_form: FormGroup
+  Transit_info_form: FormGroup
+  Payment_info_form: FormGroup
+
+
+
+
+
+  //Tax Information calculation //
+  Total_pur_WoT = 0;
+  Total_tax = 0;
+  Total_pur = 0;
+  Edit_list_index;
+  single_subsidy_amnt = 0;
+  sub_total = 0;
+
+  //Final Total Information calculation//
+  Pur_total_sgst = 0;
+  Pur_total_cgst = 0;
+  Pur_total_igst = 0;
+  Pur_total_amnt_wo_tax = 0;
+  Pur_total_tax = 0;
+  Pur_total_amnt = 0;
+  Pur_amnt_with_tax = 0;
+
+  ////////////////
+
+
+
+
+  //Ng Model Vendor Information Form
+  data_Pur_ven_id;
+  data_Pur_ven_ship_addr;
+
+
+  ///////////////customerModel//////////
+  Model_Sale_fpo_name;
+  Model_Sale_farmer_name;
+  Model_Sale_contact_search;
+  Model_Sale_shipping_address;
+  Model_Sale_cust_type;
+  Model_Sale_id;
+  Model_customerName;
+
+
+
+  /////////////productModel////////////
+  Model_Sale_prod_name;
+  Model_Sale_prod_hsn;
+  Model_Sale_prod_price;
+  Model_Sale_prod_pkg_type;
+  Model_Sale_prod_pkg_qty;
+  Model_Sale_prod_tax_type;
+  Model_Sale_prod_tax_percent;
+  Model_Sale_prod_tax_sgst;
+  Model_Sale_prod_tax_cgst;
+  Model_Sale_prod_tax_igst;
+  Model_Sale_prod_subcd: any = {};
+  Model_farmer_id;
+  Model_selected_Sale_fpo;
+  Model_selected_Sale_farmer;
+
+  /////////////TransitModel////////////
+  Model_Sale_trans_charge
+  Model_Sale_transit_shipping_addr
+  Model_transit_method
+
+
+  /////////////PaymentModel////////////
+
+  Model_pay_name
+  Model_pay_amount
+  //cod
+  pay_mod
+  //CHEQUE
+  Model_cod_depositer_name;
+  Model_cod_amount
+  Model_cheque_depositer_name;
+  Model_cheque_amount
+
+
+
+  Model_cheque_no;
+  Model_cheque_date;
+  //netbanking
+  Model_ulb_ref_id;
+  Model_ulb_acc_no;
+  Model_ulb_ifsc;
+  Model_ulb_branch;
+  //customer
+  Model_cust_ref_id;
+  Model_net_amount
+
+  Model_cust_acc_no;
+  Model_cust_ifsc;
+  Model_cust_branch;
+  ///////////////////////////////
+
+
+
+  //dropdown list variable///////
+  typeOfPackages: any = {};
+  Sale_products;
+  typeOfTaxes: any = {};
+  gstValues: any = {};
+  subcds: any = {};
+  gstValues1: any = {};
+
+  //table row variables//
+  public rows: Array<{
+    productID: string,
+    product: any,
+    hsn: string,
+    price: number,
+    sellingPrice: number,
+    packageType: string,
+    quantity: number,
+    tax_Type: string,
+    amount: number,
+    tax_Percent: string,
+    sgst: number,
+    cgst: number,
+    igst: number,
+    totalTax: number,
+    totalAmount: number,
+    subcd: {
+      type: string,
+      unit: string,
+      value: string,
+      amount: number,
+      desc: string
+    },
+    subtotal: number,
+    amnt_wo_total: number
+  }> = [];
+
+
+  //Api response lists//
+  Farmer_list: any = {};
+  Fpo_list: any = {};
+  Product_list: any = {};
+  Transit_list: any = {};
+  states: string[] = [];
+
+
+  items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
+
+
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  todos: any = {};
+
+  constructor(public fb: FormBuilder,
+    private ngZone: NgZone,
+    private http: HttpClient,
+    public api: ApiService,
+    public local_data: LocaldataService,
+    public cmn_ser: CommonService) {
+
+
+
+    this.ulb = true;
+    this.btn_bool_sv = true;
+    this.btn_bool_up = false;
+    //retrive user object from localstorage
+    var user_obj = JSON.parse(localStorage.getItem('user_obj'));
+    this.Local_Loggedin_user_info = user_obj.user;
+    console.log('Local_Loggedin_user_info', this.Local_Loggedin_user_info);
+  }
+
+
+
+  ngOnInit() {
+
+    var data = {
+      "companySearch": {},
+      "productSearch": {}
+    }
+
+
+    //API call to retrive sale prefill data
+    this.http.get(this.api.getip() + 'page-service/sale/prefill')
+      .subscribe(res => {
+        this.Sale_prefill = res;
+        console.log(this.Sale_prefill.response.data);
+        this.local_data.set_Purchase_prefill_data(this.Sale_prefill.response.data);
+        this.Pur_vendor = this.Sale_prefill.response.data.companies;
+        this.typeOfPackages = this.Sale_prefill.response.data.typeOfPackages;
+        this.Sale_products = this.Sale_prefill.response.data.products;
+        this.typeOfTaxes = this.Sale_prefill.response.data.typeOfTaxes;
+        this.gstValues1 = this.Sale_prefill.response.data.gstValues;
+        console.log(' this.gstValues', this.gstValues);
+
+        this.subcds = this.gstValues = this.Sale_prefill.response.data.subcds;
+      });
+
+
+    //API call to retrive Get_Farmer_list data
+    let mystate = JSON.parse(localStorage.getItem('user_obj')).user.address.state
+    let data1 = {
+      "status": ["Active"],
+      "address": {
+        "state": mystate
+      }
+    }
+    this.local_data.Get_Farmer_list(data1)
+      .subscribe(res => {
+        let listresponse: any = res
+        this.Farmer_list = listresponse.response.data.users;
+        console.log(this.Farmer_list);
+
+      });
+
+
+    //API call to retrive Get_Fpo_list data
+
+    let data2 = {
+      "nob": ["ULB"]
+    }
+
+    this.local_data.Get_Fpo_list(data2)
+      .subscribe(res => {
+        let listresponse: any = res
+        this.Fpo_list = listresponse.response.data.docs;
+        console.log(this.Fpo_list);
+
+
+
+      });
+
+    //API call to retrive Get_Product_list data
+    let data3 = {
+      "status": ['Active']
+    };
+    this.local_data.Get_Product_list(data3)
+      .subscribe(res => {
+        let listresponse: any = res
+        this.Product_list = listresponse.response.data.docs;
+        console.log(this.Product_list);
+      });
+
+    //API call to retrive Get_Transit_list data
+
+    let data4 = {
+      "nob": ["TRANSIT"]
+    };
+
+    this.local_data.Get_Transit_list(data4)
+      .subscribe(res => {
+        let listresponse: any = res
+        this.Transit_list = listresponse.response.data.docs;
+        console.log(this.Transit_list);
+      });
+
+
+    //formgroup variable from  Customer_info_form
+    this.Customer_info_form = this.fb.group({
+      Sale_cust_type: [''],
+      Sale_cust_fpo_id: [''],
+      Sale_cust_farmer_id: [''],
+      Sale_cust_shipping_address: [''],
+    })
+
+
+    //formgroup variable from  Fill_sale_table_form
+    this.Fill_sale_table_form = this.fb.group({
+      Sale_prod_name: [''],
+      Sale_prod_hsn: [''],
+      Sale_prod_price: [''],
+      Sale_prod_pkg_type: [''],
+      Sale_prod_pkg_qty: [''],
+      Sale_prod_unit_qty: [''],
+      Sale_prod_tax_type: [''],
+      Sale_prod_tax_percent: [''],
+      Sale_prod_tax_sgst: [''],
+      Sale_prod_tax_cgst: [''],
+      Sale_prod_tax_igst: [''],
+      Sale_prod_subcd: [''],
+    });
+
+    //formgroup variable from  Customer_info_form
+    this.Transit_info_form = this.fb.group({
+      Sale_transit: [''],
+      Sale_transit_charge: [''],
+      Sale_transit_shipping_addr: [''],
+    });
+
+    this.Payment_info_form = this.fb.group({
+      Sale_pay_mod: [''],
+      Sale_pay_cod_depositer_name: [''],
+      Sale_pay_cod_amount: [],
+      Sale_pay_cheq_depositer_name: [''],
+      Sale_pay_cheq_amount: [],
+      Sale_pay_cheq_no: [''],
+      Sale_pay_cheq_date: [''],
+      Sale_pay_net_ulb_refid: [''],
+      Sale_pay_net_ulb_accno: [''],
+      Sale_pay_net_ulb_ifsc: [''],
+      Sale_pay_net_ulb_branch: [''],
+      Sale_pay_net_cust_refid: [''],
+      Sale_pay_net_amount: [],
+      Sale_pay_net_cust_accno: [''],
+      Sale_pay_net_cust_ifsc: [''],
+      Sale_pay_net_cust_branch: [''],
+      Sale_pay_name: [''],
+      Sale_pay_amount: [''],
+    });
+
+    //breakpoint matgridlist
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 2;
+  }
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 2;
+  }
+  //////////////
+
+  buttonClicked() {
+    this.rows.push({
+      productID: this.Fill_sale_table_form.value.Sale_prod_name.uniqueId,
+      product: this.Fill_sale_table_form.value.Sale_prod_name,
+      hsn: this.Fill_sale_table_form.value.Sale_prod_hsn,
+      price: this.Fill_sale_table_form.value.Sale_prod_price,
+      sellingPrice: this.Fill_sale_table_form.value.Sale_prod_price,
+      packageType: this.Fill_sale_table_form.value.Sale_prod_pkg_type,
+      quantity: parseFloat(this.Fill_sale_table_form.value.Sale_prod_pkg_qty),
+      tax_Type: this.Fill_sale_table_form.value.Sale_prod_tax_type,
+      tax_Percent: this.Fill_sale_table_form.value.Sale_prod_tax_percent,
+      sgst: this.chk_type_number(this.Fill_sale_table_form.value.Sale_prod_tax_sgst),
+      cgst: this.chk_type_number(this.Fill_sale_table_form.value.Sale_prod_tax_cgst),
+      igst: this.chk_type_number(this.Fill_sale_table_form.value.Sale_prod_tax_igst),
+      totalTax: this.chk_type_number(this.Total_tax),
+      amount: this.chk_type_number(this.Total_pur_WoT),
+      totalAmount: this.chk_type_number(this.Total_pur),
+      subcd: {
+        type: this.Model_Sale_prod_subcd.code,
+        unit: this.Model_Sale_prod_subcd.type,
+        value: this.Model_Sale_prod_subcd.value,
+        amount: this.chk_type_number(this.single_subsidy_amnt),
+        desc: ''
+
+      },
+      subtotal: this.chk_type_number(this.sub_total),
+      amnt_wo_total: this.chk_type_number(this.Total_pur_WoT)
+    });
+
+    console.log(this.rows);
+    this.Final_total_pur_info()
+    this.empty_product_table_fill_form();
+
+
+  };
+
+
+  edit_list(row, i) {
+    this.Edit_list_index = i;
+    console.log(row);
+
+    if (this.btn_bool_sv == true) {
+      this.btn_bool_sv = false;
+      this.btn_bool_up = true;
+    }
+
+
+  };
+
+  Update_list(index) {
+    index = this.Edit_list_index
+    if (this.btn_bool_up == true) {
+      this.btn_bool_sv = true;
+      this.btn_bool_up = false;
+      this.rows[index].product = this.Fill_sale_table_form.value.Sale_prod_name,
+        this.rows[index].hsn = this.Fill_sale_table_form.value.Sale_prod_hsn,
+        this.rows[index].price = this.Fill_sale_table_form.value.Sale_prod_price,
+        this.rows[index].packageType = this.Fill_sale_table_form.value.Sale_prod_pkg_type,
+        this.rows[index].quantity = parseFloat(this.Fill_sale_table_form.value.Sale_prod_pkg_qty),
+        // this.rows[index].Tbl_unit_qty= this.Fill_sale_table_form.value.Sale_prod_unit_qty,
+        this.rows[index].tax_Type = this.Fill_sale_table_form.value.Sale_prod_tax_type,
+        this.rows[index].tax_Percent = this.Fill_sale_table_form.value.Sale_prod_tax_percent,
+        this.rows[index].sgst = this.chk_type_number(this.Fill_sale_table_form.value.Sale_prod_tax_sgst),
+        this.rows[index].cgst = this.chk_type_number(this.Fill_sale_table_form.value.Pur_prod_tax_cgs),
+        this.rows[index].igst = this.chk_type_number(this.Fill_sale_table_form.value.Sale_prod_tax_igst),
+        this.rows[index].totalAmount = this.chk_type_number(this.Total_pur),
+        // this.rows[index].subcd= this.chk_type_number(this.single_subsidy_amnt),
+        this.rows[index].subcd = {
+          type: this.Model_Sale_prod_subcd.code,
+          unit: this.Model_Sale_prod_subcd.type,
+          value: this.Model_Sale_prod_subcd.value,
+          amount: this.chk_type_number(this.single_subsidy_amnt),
+          desc: ''
+        }
+      this.rows[index].subtotal = this.chk_type_number(this.sub_total),
+        this.rows[index].amnt_wo_total = this.chk_type_number(this.Total_pur_WoT);
+
+      this.Final_total_pur_info()
+      this.empty_product_table_fill_form();
+
+    }
+
+  }
+
+
+  empty_product_table_fill_form() {
+
+    console.log(' this.empty_product_table_fill_form()');
+
+    this.Model_Sale_prod_name = ''
+    this.Model_Sale_prod_hsn = ''
+    this.Model_Sale_prod_price = 0
+    this.Model_Sale_prod_pkg_type = ''
+    this.Model_Sale_prod_pkg_qty = 0
+    this.Model_Sale_prod_subcd = 0
+    this.Model_Sale_prod_tax_type = ''
+    this.Model_Sale_prod_tax_percent = ''
+    this.Model_Sale_prod_tax_sgst = 0
+    this.Model_Sale_prod_tax_cgst = 0
+    this.Model_Sale_prod_tax_igst = 0
+    this.empty_tax_info();
+  }
+
+
+  empty_tax_info() {
+    this.Total_pur_WoT = 0;
+    this.Total_tax = 0;
+    this.single_subsidy_amnt = 0;
+    this.Total_pur = 0;
+  }
+
+
+
+  //
+  Final_total_pur_info() {
+    this.Pur_total_amnt_wo_tax = 0;
+    this.Pur_total_amnt = 0;
+    this.Pur_total_tax = 0
+
+    this.Pur_total_sgst = 0;
+    this.Pur_total_cgst = 0;
+    this.Pur_total_igst = 0;
+    this.Pur_amnt_with_tax=0;
+
+    for (let index = 0; index < this.rows.length; index++) {
+      const element = this.rows
+      console.log(element);
+      let that = this;
+      that.Pur_total_amnt_wo_tax = that.Pur_total_amnt_wo_tax + that.rows[index].amount- that.rows[index].subcd.amount;
+      that.Pur_amnt_with_tax = that.Pur_amnt_with_tax + that.rows[index].totalAmount;
+
+      that.Pur_total_tax = that.Pur_total_tax + (function () {
+        if (that.rows[index].cgst) {
+          return that.rows[index].cgst;
+        } else {
+          return 0
+
+        }
+      }()) + (function () {
+        if (that.rows[index].sgst) {
+          console.log(that.rows[index].sgst);
+
+          return that.rows[index].sgst;
+        } else {
+          return 0
+
+        }
+      }()) + (function () {
+        if (that.rows[index].igst) {
+          console.log(that.rows[index].igst);
+
+          return that.rows[index].igst;
+        } else {
+          return 0
+
+        }
+      }())
+      console.log("that.Pur_total_tax", that.Pur_total_tax);
+      that.Pur_total_amnt = that.Pur_total_amnt_wo_tax + that.Pur_total_tax + this.chk_null(this.Model_Sale_trans_charge);
+      
+      console.log(that.Pur_total_amnt);
+      that.Pur_total_sgst = that.Pur_total_sgst + this.chk_null(that.rows[index].sgst)
+      that.Pur_total_cgst = that.Pur_total_cgst + this.chk_null(that.rows[index].cgst)
+      that.Pur_total_igst = that.Pur_total_igst + this.chk_null(that.rows[index].igst)
+
+    }
+    console.log(this.Pur_total_amnt);
+
+
+
+
+  }
+
+
+
+
+  selected_product() {
+    console.log("product", this.Model_Sale_prod_name);
+    this.Model_Sale_prod_hsn = this.Model_Sale_prod_name.hsnCode;
+    this.Model_Sale_prod_price = this.Model_Sale_prod_name.price;
+    // this.Model_Sale_prod_pkg_type=this.Model_Sale_prod_name.
+    // this.Model_Sale_prod_pkg_qty=this.Model_Sale_prod_name.
+    // this.Model_Sale_prod_unit_qty=this.Model_Sale_prod_name.
+    this.Model_Sale_prod_tax_type = this.Model_Sale_prod_name.taxType;
+    // this.Model_Sale_prod_tax_percent=this.Model_Sale_prod_name.
+    // this.Model_Sale_prod_tax_sgst=this.Model_Sale_prod_name.
+    // this.Model_Sale_prod_tax_cgst=this.Model_Sale_prod_name.
+    // this.Model_Sale_prod_tax_igst=this.Model_Sale_prod_name.
+
+
+
+  };
+
+
+  product_total_price() {
+    console.log(this.Model_Sale_prod_tax_percent);
+    this.Total_pur_WoT = parseInt(this.Model_Sale_prod_pkg_qty) * parseFloat(this.Model_Sale_prod_price);
+    console.log(this.Total_pur_WoT);
+    this.single_subsidy_amnt = Math.round(this.chk_type_number(this.Model_Sale_prod_subcd.value)) / 100 * (this.Total_pur_WoT);
+    console.log(' this.single_subsidy_amnt this.single_subsidy_amnt this.single_subsidy_amnt------', this.single_subsidy_amnt);
+    this.Total_tax = Math.round((parseInt(this.chk_type_number(this.Model_Sale_prod_tax_percent)) / 100) * (this.Total_pur_WoT-this.single_subsidy_amnt));
+
+    // this.sub_total = 
+
+    if (!this.isObjectEmpty(this.Model_Sale_prod_subcd)) {
+
+      console.log('this.isObjectEmpty(this.Model_Sale_prod_subcd)', this.isObjectEmpty(this.Model_Sale_prod_subcd));
+
+      console.log('this.Model_Sale_prod_subcd================>', this.Model_Sale_prod_subcd);
+
+   
+
+
+    } else {
+
+      console.log('this.isObjectEmpty(this.Model_Sale_prod_subcd)', this.isObjectEmpty(this.Model_Sale_prod_subcd));
+      this.isObjectEmpty(this.Model_Sale_prod_subcd);
+      this.single_subsidy_amnt = 0;
+      console.log('00000000000000000------', this.single_subsidy_amnt);
+
+
+    }
+
+    console.log('sub_percentage', this.Model_Sale_prod_subcd);
+
+    console.log('.............', this.chk_type_number(this.Model_Sale_prod_subcd.value) / 100);
+    console.log('.........4.........', (this.Total_pur_WoT + this.Total_tax));
+    this.sub_total = this.Total_pur_WoT + this.Total_tax;
+
+
+    this.Total_pur = this.Total_pur_WoT + this.Total_tax - this.chk_type_number(this.single_subsidy_amnt);
+    this.Model_Sale_prod_tax_sgst = this.Tax_divide(this.Total_tax);
+
+    let that = this
+    that.Model_Sale_prod_tax_igst = (function () {
+
+      if (that.Model_Sale_prod_tax_sgst) {
+
+        return that.Tax_divide(that.Total_tax);
+      } else if (that.Model_Sale_prod_tax_cgst) {
+
+        return that.Tax_divide(that.Total_tax);
+      } else {
+        return 0
+      }
+    }());
+
+    console.log(that.Model_Sale_prod_tax_igst);
+  }
+
+
+
+  Delete_pro_list(index) {
+    console.log(index);
+    this.rows.splice(index, 1)
+    this.Final_total_pur_info();
+  }
+
+  
+
+  Final_create_sale_submission() {
+
+    // let payment_data = this.Payment_object_creation();
+    let payment_data1 = {
+      type: this.Payment_info_form.value.Sale_pay_mod,
+      desc: '',
+      amount: parseFloat(this.Payment_info_form.value.Sale_pay_amount),
+      // data:this.Payment_object_creation()
+    }
+    Object.assign(payment_data1, this.Payment_object_creation())
+
+
+    console.log("pay data", payment_data1);
+
+    let transit_info = {
+      name: this.Transit_info_form.value.Sale_transit.companyName,
+      address: this.Transit_info_form.value.Sale_transit_shipping_addr,
+      spocName: this.Transit_info_form.value.Sale_transit.spoc.name,
+      spocNumber: this.Transit_info_form.value.Sale_transit.spoc.contact,
+      driverName: '',
+      driverNumber: '',
+      charges: parseFloat(this.Transit_info_form.value.Sale_transit_charge),
+      isPaymentDone: '',
+    }
+
+    var Create_sale_data = {
+      customerId: this.Model_Sale_id,
+      customerType: this.Model_Sale_cust_type,
+      companyId: this.Local_Loggedin_user_info.companyId,
+      customerName: this.Model_customerName,
+      address: {
+        billing: {
+          addressString: '',
+          address: {},
+        },
+        shipping: {
+          addressString: '',
+          address: this.Local_Loggedin_user_info.address,
+        }
+      },
+      saleProducts: this.rows,
+      taxType: '',
+      totalAmountWithoutTax: this.Pur_total_amnt_wo_tax,
+      totalCGST: '' + this.Pur_total_cgst,
+      totalSGST: '' + this.Pur_total_sgst,
+      totalIGST: '' + this.Pur_total_igst,
+      totalTax: this.Pur_total_tax,
+      totalAmount: this.Pur_total_amnt,
+      fInalAmount: this.Pur_total_amnt,
+      payments: [payment_data1],
+      transport: transit_info
+    }
+
+    console.log(Create_sale_data);
+
+    this.http.post(this.api.getip() + 'sale', Create_sale_data)
+      .subscribe(res => {
+        console.log(res);
+        Swal.fire({
+          type: 'success',
+          title: 'Sale Created',
+          timer: 3500
+        });
+      })
+
+  }
+
+  chk_type_number(data) {
+    console.log(data);
+
+    if (data) {
+
+      return data
+    } else {
+
+      return 0
+    }
+
+  }
+
+
+
+  selected_user_type() {
+    console.log(this.user_type);
+    if (this.user_type == 'farmer_type') {
+      this.farmer_type = true;
+      this.fpo_type = false;
+      this.Model_Sale_cust_type = 'FARMER';
+
+
+    } else if (this.user_type == 'fpo_type') {
+      this.fpo_type = true;
+      this.farmer_type = false;
+      this.Model_Sale_cust_type = 'FPO';
+    }
+
+  };
+
+  selected_user(indicator) {
+  
+if(indicator==1){
+  this.selected_address= this.Model_selected_Sale_fpo.address;
+}else if(indicator==2){
+  this.selected_address= this.Model_selected_Sale_farmer.address;
+
+}
+
+
+
+this.api.POST_Method('address',this.selected_address,'')
+.subscribe(res=>{
+   this.address=res;
+  console.log(this.address.response.data.address);
+  if (indicator == 1) {
+    console.log(this.Model_selected_Sale_fpo);
+
+    this.Model_Sale_id = this.Model_selected_Sale_fpo.uniqueId;
+    this.Model_customerName = this.Model_selected_Sale_fpo.companyName;
+    this.Model_Sale_shipping_address = this.ToaddresString(this.address.response.data.address)
+  } else if (indicator == 2) {
+
+    this.Model_Sale_id = this.Model_selected_Sale_farmer.userName;
+    this.Model_customerName = this.Model_selected_Sale_farmer.name;
+    console.log(this.Model_selected_Sale_farmer);
+    this.Model_Sale_shipping_address = this.ToaddresString(this.address.response.data.address);
+    console.log(this.Model_Sale_shipping_address);
+    
+  }
+  this.Model_Sale_transit_shipping_addr = this.Model_Sale_shipping_address;
+  
+},err=>{
+console.log(err);
+
+})
+
+
+
+
+
+   
+
+  }
+
+  slect_payment_mode() {
+
+    console.log(this.pay_mod);
+    if (this.pay_mod == 'CASH') {
+      this.CASH = true;
+      this.CHEQUE = false;
+      this.NB = false;
+    } else if (this.pay_mod == 'CHEQUE') {
+      this.CASH = false;
+      this.CHEQUE = true;
+      this.NB = false;
+    }
+    else if (this.pay_mod == 'NB') {
+      this.CASH = false;
+      this.CHEQUE = false;
+      this.NB = true;
+    }
+  }
+
+
+  Payment_object_creation() {
+
+
+
+    console.log('Payment_object_creation', this.pay_mod);
+
+    console.log('Payment_object_creation', this.Payment_info_form.value);
+
+    if (this.pay_mod == 'CASH') {
+      let pay_data = {
+        name: this.Payment_info_form.value.Sale_pay_name
+      }
+
+      return pay_data;
+    } else if (this.pay_mod == 'CHEQUE') {
+
+      let pay_data = {
+        name: this.Payment_info_form.value.Sale_pay_name,
+        checkNo: this.Payment_info_form.value.Sale_pay_cheq_no,
+        date: this.Payment_info_form.value.Model_cheque_date,
+        desc: ''
+      }
+      return pay_data;
+
+    }
+    else if (this.pay_mod == 'NB') {
+      let pay_data = {
+
+        name: this.Payment_info_form.value.Sale_pay_name,
+        referenceId: this.Payment_info_form.value.Sale_pay_net_cust_refid,
+        bankName: '',
+        ifscCode: this.Payment_info_form.value.Sale_pay_net_cust_ifsc,
+        branch: this.Payment_info_form.value.Sale_pay_net_cust_branch,
+        date: this.Payment_info_form.value.Sale_pay_net_cust_branch,
+
+      }
+      return pay_data;
+    }
+
+
+  }
+
+
+
+  ToaddresString(addr) {
+    let line1 = this.cmn_ser.datafounder2(addr.doorNo) + this.cmn_ser.datafounder2(addr.blockName) + '\n' + this.cmn_ser.datafounder2(addr.street)
+    let line2 = this.cmn_ser.datafounder2(addr.landmark) + this.cmn_ser.datafounder2(addr.gramPanchayatName)
+    let line3 = this.cmn_ser.datafounder2(addr.village) + this.cmn_ser.datafounder2(addr.districtName)
+    let line4 = this.cmn_ser.datafounder2(addr.stateName) + this.cmn_ser.datafounder2(addr.country)
+    let line5 = this.cmn_ser.datafounder2(addr.postalcode)
+
+    this.Company_address = line1 + '\n' + line2 + ' ' + line3 + ' ' + line4 + '\n' + line5;
+
+    return this.Company_address;
+  }
+
+
+  isObjectEmpty(Obj) {
+    for (var key in Obj) {
+      if (Obj.hasOwnProperty(key))
+        return false;
+    }
+    return true;
+  }
+
+
+  chk_null(data) {
+    if (data) {
+
+
+      return parseInt(data)
+    } else {
+      return 0
+    }
+  }
+
+  Tax_divide(tax) {
+
+    if (tax) {
+
+      return tax / 2
+    } else {
+      return 0
+    }
+
+  }
+
+
+}

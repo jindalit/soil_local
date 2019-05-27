@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <!-- Favicon icon -->
+  <link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="assets/images/logo.png"
+  />
+  <title>Soil</title>
+  <link href="assets/css/theme.css" rel="stylesheet" />
+  <link href="assets/css/style.css" rel="stylesheet" />
+  <!--[if Browser is IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="preloader">
+        <div class="lds-ripple">
+          <div class="lds-pos"></div>
+          <div class="lds-pos"></div>
+        </div>
+      </div>
+      <div
+      class="w-100 auth-wrapper d-flex no-block justify-content-center align-items-center"
+      >
+      <img
+      class="cover-image"
+      src="assets/images/bg/cover-12.jpg"
+      />
+      <div class="auth-box m-0">
+        <div id="loginform">
+          <div class="logo">
+            <span class="db"></span>
+            <img
+            class="bg-primary p-3 rounded harit-logo"
+            src="assets/images/logo.png"
+            alt="logo"
+            />
+          </span>
+          <h2 class="my-3 text-white title-letter-spacing-12">
+            <strong>LOGIN</strong>
+          </h2>
+        </div>
+        <!-- Form -->
+        <div class="row">
+          <div class="col-12">
+            <form
+            class="form-horizontal m-t-20"
+            id="loginform"
+            action="dashboard"
+            >
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-primary text-white" id="basic-addon1"
+                ><i class="fa fa-user"></i
+                  ></span>
+                </div>
+                <input
+                type="text"
+                class="form-control form-control-lg text-primary"
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-primary text-white" id="basic-addon2"
+                  ><i class="fas fa-key"></i
+                    ></span>
+                  </div>
+                  <input
+                  type="password"
+                  class="form-control form-control-lg text-primary"
+                  placeholder="Password"
+                  aria-label="Password"
+                  aria-describedby="basic-addon1"
+                  />
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <div class="custom-control custom-checkbox pt-4 pb-3">
+                      <input
+                      type="checkbox"
+                      class="custom-control-input text-white"
+                      id="customCheck1"
+                      />
+                      <label class="custom-control-label" for="customCheck1"
+                      >Remember me</label
+                      >
+                      <a
+                      href="javascript:void(0)"
+                      id="to-recover"
+                      class="btn btn-link text-white p-0 float-right"
+                      ><i class="fa fa-lock mr-2"></i> I forgot my password.</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group text-center">
+                  <div class="col-xs-12 mb-3">
+                    <button
+                    class="btn waves-effect waves-light btn-block btn-rounded p-3 btn-primary"
+                    type="submit"
+                    >
+                    Log In Now
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                class="col-xs-12 col-sm-12 col-md-12 text-center"
+                >
+                <hr class="bg-secondary">
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <div class="col-sm-12 text-center">
+                <a
+                href="signup.html"
+                class="btn waves-effect waves-light btn-rounded btn-outline-primary ml-1"
+                >I want to register</a
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="recoverform">
+      <div class="logo">
+        <span class="db"
+        ><img class="bg-primary p-3 rounded" width="40%" src="assets/images/logo.png" alt="logo"
+        /></span>
+        <h3
+        class="font-medium my-3 text-white"
+        style="letter-spacing: 1.1px;"
+        >
+        <strong>RECOVER PASSWORD</strong>
+      </h3>
+      <span class="mt-3"
+      >Enter your Email / Username and OTP will be sent to you!</span
+      >
+    </div>
+    <div class="row">
+      <!-- Form -->
+      <form class="col-12 otp-container" action="reset-password.html">
+        <!-- email -->
+        <div class="form-group row">
+          <div class="col-12  my-3 ">
+            <div class="input-group ">
+              <input
+              class="form-control form-control-lg col-10 mx-auto"
+              type="email"
+              placeholder="Email Address / Username.."
+              />
+            </div>
+          </div>
+        </div>
+        <!-- password -->
+        <div class="row m-t-20 p-b-20">
+          <div class="col-12 text-center">
+            <button
+            class="btn btn-block col-8 btn-rounded waves-effect waves-light btn-primary p-3 send-otp"
+            type="button"
+            name="action"
+            >
+            <i class="fa fa-paper-plane"></i> &nbsp;&nbsp; Send OTP
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="col-12 p-5 text-center">
+      <button class="btn text-white" id="back-to-signin">
+        <i class="fa fa-arrow-alt-circle-left"></i>&nbsp;&nbsp;Back
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/wave.js"></script>
+<script>
+  $('[data-toggle="tooltip"]').tooltip();
+  $(".preloader").fadeOut();
+  // ==============================================================
+  // Login and Recover Password
+  // ==============================================================
+  $("#to-recover").on("click", function() {
+    $("#loginform").slideUp();
+    $("#recoverform").fadeIn();
+  });
+  
+  $("#back-to-signin").on("click", function() {
+    window.location.reload();
+  });
+  
+    $('.send-otp').on('click', function() {
+    $('.otp-container').html(''
+    +'<div class="form-group row">'
+    +'<div class="col-12">'
+    +'<div class="input-group my-3 col-10 mx-auto">'
+    +'<input class="form-control form-control-lg" type="text" maxlength="6" placeholder="Enter OTP Here.." />'
+    +'<div class="input-group-prepend">'
+    +'<button type="button" onClick="refreshOTP();" class="btn btn-danger btn-block text-white">'
+    +'<i class="fa fa-reply" aria-hidden="true"></i> &nbsp;Send Again</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="row m-t-20 p-b-20">'
+    +'<div class="col-12 text-center">'
+    +'<button class="btn btn-block col-8 btn-rounded waves-effect waves-light btn-success p-3" type="submit" name="action">'
+    +'<i class="fa fa-check-circle-o"></i> &nbsp;&nbsp; Verify OTP'
+    +'</button>'
+    +'</div>'
+    +'</div>'
+    );
+  });
+
+  function refreshOTP() {
+    $('.otp-container').html(''
+    +'<div class="form-group row">'
+          +'<div class="col-12  my-3 ">'
+            +'<div class="input-group ">'
+              +'<input class="form-control form-control-lg col-10 mx-auto" type="email" placeholder="Email Address / Username.." />'
+            +'</div>'
+          +'</div>'
+        +'</div>'
+        +'<div class="row m-t-20 p-b-20">'
+          +'<div class="col-12 text-center">'
+            +'<button class="btn btn-block col-8 btn-rounded waves-effect waves-light btn-primary p-3 send-otp" onClick="sendOTP();">'
+            +'<i class="fa fa-paper-plane"></i> &nbsp;&nbsp; Send OTP'
+          +'</button>'
+        +'</div>'
+      +'</div>'
+    );
+  }
+
+  function sendOTP () {
+    $('.otp-container').html(''
+    +'<div class="form-group row">'
+    +'<div class="col-12">'
+    +'<div class="input-group my-3 col-8 mx-auto">'
+    +'<input class="form-control form-control-lg" type="text" maxlength="6" placeholder="Enter OTP Here.." />'
+    +'<div class="input-group-prepend">'
+    +'<button type="button" onClick="refreshOTP();" class="btn btn-danger btn-block text-white">'
+    +'<i class="fa fa-refresh" aria-hidden="true"></i> Refresh</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="row m-t-20 p-b-20">'
+    +'<div class="col-12 text-center">'
+    +'<button class="btn btn-block col-8 btn-rounded waves-effect waves-light btn-success p-3" type="submit" name="action">'
+    +'<i class="fa fa-check-circle-o"></i> &nbsp;&nbsp; Verify OTP'
+    +'</button>'
+    +'</div>'
+    +'</div>'
+    );
+  }
+  </script>
+</body>
+</html>
+                          

@@ -1,0 +1,65 @@
+<div *ngIf="!isEdit">
+    <h3>New Users List</h3>
+    <ag-grid-angular style="width:98%; height:430px;" class="ag-theme-dark" [rowData]="rowData" [columnDefs]="columnDefs"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
+</div>
+
+
+<div class="editUser" *ngIf="isEdit">
+    <fieldset>
+        <legend>
+            <h3>Modify User ({{selectedUser}})</h3>
+        </legend>
+
+
+        <form ngNativeValidate>
+
+            <div>
+                <div class="two-col">
+                    <label>Name</label>
+                    <input type="text" [(ngModel)]="params.name" name="name" autocomplete="off" required>
+                </div>
+                <div class="two-col">
+                    <label>UserName</label>
+                    <input type="text" [(ngModel)]="params.userName" name="userName" autocomplete="off" disabled>
+                </div>
+
+            </div>
+            <div>
+                <div class="two-col">
+                    <label>Mobile No</label>
+                    <input type="text" [(ngModel)]="params.mobile" name="mobile" autocomplete="off" required>
+                </div>
+                <div class="two-col">
+                    <label>Email</label>
+                    <input type="email" [(ngModel)]="params.email" name="email" autocomplete="off" required>
+                </div>
+            </div>
+            <div>
+                <div class="two-col">
+                    <label>Department </label>
+                    <input type="text" [(ngModel)]="params.department" name="dept" disabled readonly required autocomplete="off">
+
+                </div>
+                <div class="two-col">
+                    <label>Role</label>
+                    <select [(ngModel)]="params.role" name="role" required>
+                        <option *ngFor="let role of roles" [value]="role.code">{{role.label}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div class="two-col">
+                    <label>Designation</label>
+                    <select [(ngModel)]="params.designation" name="country">
+                        <option *ngFor="let designation of designation" [value]="designation.code">{{designation.label}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center"><button mat-button color="primary" (click)="isEdit = false" class="btn_rad_clr">Back
+                    to New Users List</button><button type="submit" mat-button color="primary" (click)="updateUser()" class="btn_rad_clr">Update
+                    User</button></div>
+        </form>
+    </fieldset>
+</div>

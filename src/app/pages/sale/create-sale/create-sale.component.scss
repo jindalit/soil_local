@@ -1,0 +1,232 @@
+.purchase_wr{
+    display: flex;
+    flex-wrap: wrap;
+    .example-card.cd1{
+        flex: 1;
+        flex-grow: 2;
+
+
+    }
+    .example-card.cd2{
+        flex: 1;
+        flex-grow: 3;
+
+    }
+
+    .example-card.cd3{
+      flex: 1;
+      flex-grow: 1;
+
+  }
+
+
+}
+
+
+.purchase_wr1{
+  display: flex;
+  flex-wrap: wrap;
+  .example-card.cd4{
+    flex: 4;
+}
+.example-card.cd5{
+  flex: 2;
+
+
+}
+}
+
+.example-card.cd1,.example-card.cd2,.example-card.cd4{
+
+    margin-right: 10px;
+
+}
+@media (min-width: 320px) and (max-width: 480px) {
+  
+    //CSS
+
+    .example-card.cd4{
+      flex: 1 0 95% !important;
+    }
+  .example-card.cd5{
+    flex: 1;
+  
+  
+  }
+
+    .example-card.cd1,.example-card.cd2{
+        margin-right: 0px;
+
+    }
+.example-card.cd2,.example-card.cd3{
+margin-top: 10px;
+    } 
+  }
+
+  .marg_top_20{
+      margin-top:20px;
+  }
+
+
+
+
+table {
+  border: 1px solid #7671a4;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  border: 1px solid #ddd;
+  padding: .35em;
+  // color: #ddd;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+  // color: #fff;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+    // color: #fff;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.hr_line{
+  border-bottom: 1px solid grey;
+  width: 100%;
+}
+.tax_info{
+  margin-top: 10% !important;
+}
+
+.cd_size1{
+  height: 320px;
+}
+
+.span_txt_right{
+
+position:absolute;
+left: 30px;
+}
+.pad_10{
+  padding: 5px;
+}
+.span_txt_right_10{
+  position:absolute;
+left: 0px;
+}
+.marg_left{
+
+}
+
+
+.search_btn{
+margin-top: -20px;
+    margin-right: 25px;
+    font-weight: 900;
+
+}
+
+
+.fileContainer {
+  overflow: hidden;
+  position: relative;
+  /* border: 1px solid #3d3780; */
+  border: 1px solid #7671a4;
+  padding: 8px 15px 8px 15px;
+  border-radius: 4px;
+  width: 72%;
+  color: #c2c0d4;
+
+}
+
+.fileContainer [type=file] {
+  cursor: inherit;
+  display: block;
+  font-size: 999px;
+  filter: alpha(opacity=0);
+  min-height: 100%;
+  min-width: 100%;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+
+.child_label{
+
+  position: absolute;
+  left: 35px;
+
+}
+
+.example-viewport {
+  height: 200px;
+  min-width: calc(90% + 10px);  border: 1px solid black;
+}
+
+.example-item {
+  height: 50px;
+}

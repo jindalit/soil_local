@@ -1,0 +1,55 @@
+<div class="invoice">
+  <div class="inner">
+    <div class="heading text-center">Invoice <div (click)="printPage()" class="print"><i class="fas fa-print"></i></div>
+    </div>
+    <div>
+      <div class="col-2 border-right"><span class="invoice-head">Date:</span> {{saleData.createdOn | date}}</div>
+      <div class="col-2"><span class="invoice-head">Invoice No:</span> {{saleData.invoiceNo}}</div>
+    </div>
+    <div class="billing">
+      <div class="col-2 border-right">
+        <p class="invoice-head">Bill To:</p>
+        <p>Country: [{{address.countryName}}]</p>
+        <p>State: [{{address.stateName}}]</p>
+        <p>District: [{{address.districtName}}]</p>
+        <p>Block: [{{address.blockName}}]</p>
+        <p>GramPanchayat: [{{address.gramPanchayatName}}]</p>
+        <p>Village: [{{address.village}}]</p>
+        <p>DoorNo: [{{address.doorNo}}]</p>
+        <p>Landmark: [{{address.landmark}}]</p>
+        <p>Street: [{{address.street}}]</p>
+      </div>
+      <div class="col-2">
+        <p class="invoice-head">Ship To:</p>
+        <p>Country: [{{address.countryName}}]</p>
+        <p>State: [{{address.stateName}}]</p>
+        <p>District: [{{address.districtName}}]</p>
+        <p>Block: [{{address.blockName}}]</p>
+        <p>GramPanchayat: [{{address.gramPanchayatName}}]</p>
+        <p>Village: [{{address.village}}]</p>
+        <p>DoorNo: [{{address.doorNo}}]</p>
+        <p>Landmark: [{{address.landmark}}]</p>
+        <p>Street: [{{address.street}}]</p>
+      </div>
+    </div>
+    <div class="billing-table">
+      <div class="header">
+        <div class="product-name">Product Name</div>
+        <div class="hsn">Package Type</div>
+        <div class="quantity">Quantity</div>
+      </div>
+      <div class="data" *ngFor="let item of saleData.saleProducts;">
+        <div class="product-name">{{item.productID}} </div>
+        <div class="hsn"> {{item.packageType}}</div>
+        <div class="quantity">{{item.quantity}}</div>
+
+      </div>
+      <div class="total">
+         <div class="invoice-head"> Note</div>
+        <div contenteditable="true" class="note"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

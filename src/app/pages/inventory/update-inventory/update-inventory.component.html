@@ -1,0 +1,97 @@
+<form [formGroup]="inventory_form">
+  <mat-card class="update_inventory">
+    <mat-card-header class="update_inventory_title">
+      <mat-card-title>Update Inventory</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="2" rowHeight="70px" style="margin-top:15px ">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select (selectionChange)="changeBuyingPrice($event)" placeholder="Select Product"
+              formControlName="productId" [(ngModel)]="productId">
+              <mat-option *ngFor="let product of products" [value]="product.uniqueId" [id]="product.price">
+                {{product.name}}</mat-option>
+
+            </mat-select>
+
+
+
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select (selectionChange)="availableQuantity($event)" placeholder="Package Type"
+              [(ngModel)]="packageType" formControlName="packageType">
+              <mat-option *ngFor="let package of packages" [value]="package.code">{{package.label}}</mat-option>
+
+            </mat-select>
+
+
+
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="70px" style="margin-top:15px ">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Available Quantity</mat-label>
+            <input matInput formControlName="availableQty" type="number" [(ngModel)]="availableQty" readonly>
+
+
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Updating Quantity</mat-label>
+            <input matInput formControlName="quantity" type="number">
+
+
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="70px" style="margin-top:15px ">
+        <mat-grid-tile>
+
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Buying Price</mat-label>
+            <input matInput formControlName="price" [(ngModel)]="price" type="number" readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Selling Price</mat-label>
+            <input matInput formControlName="sellingPrice" type="number">
+          </mat-form-field>
+        </mat-grid-tile>
+        
+
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="70px" style="margin-top:15px ">
+        <mat-grid-tile>
+          <mat-form-field style="width:85%">
+            <input matInput required [matDatepicker]="picker" placeholder="Manufacturing Date"
+              formControlName="manuDate" [(ngModel)]="manuDate">
+            <mat-datepicker-toggle class="custom-date-picker" matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field style="width:85%">
+            <input matInput required [matDatepicker]="picker2" placeholder="Expiry date" formControlName="expDate"
+              [(ngModel)]="expDate">
+            <mat-datepicker-toggle class="custom-date-picker" matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="1" rowHeight="70px"></mat-grid-list>
+    </mat-card-content>
+    <mat-card-footer>
+      <button mat-raised-button style="float:right ; margin-top:-50px; margin-right:20px" (click)="addInventory()"
+        color="accent">Save</button>
+
+    </mat-card-footer>
+  </mat-card>
+</form>

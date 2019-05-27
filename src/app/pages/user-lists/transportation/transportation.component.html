@@ -1,0 +1,394 @@
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+<h2>Add Transportation</h2>
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="TRA_info_form">
+      <ng-template matStepLabel>Transportation Information</ng-template>
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Company Name" formControlName="companyName" required [(ngModel)]="data.companyName">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Branch" formControlName="branch" [(ngModel)]="data.branch">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Date of Incorporation" formControlName="doi"
+              [(ngModel)]="data.doi">
+            <mat-datepicker-toggle  class="custom-date-picker" matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Registration Type" formControlName="regType" [(ngModel)]="data.regType">
+          </mat-form-field>
+        </mat-grid-tile>
+
+
+
+      </mat-grid-list>
+
+
+
+
+
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Website" formControlName="website" [(ngModel)]="data.website">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="GSTIN" formControlName="gstin" required [(ngModel)]="data.gstin">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="PAN" formControlName="pan" [(ngModel)]="data.pan">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="TIN" formControlName="tin" [(ngModel)]="data.tin">
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <div style="width:100%;text-align:center">
+      
+        <button mat-raised-button matStepperNext (click)="nextStep('address')">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="Address_info_form">
+    <form [formGroup]="Address_info_form">
+      <ng-template matStepLabel>Address</ng-template>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country" required [(ngModel)]="data.address.country">
+              
+              <mat-option *ngFor="let country of addressData.Country" [value]="country">
+                {{country.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>State</mat-label>
+            <mat-select (selectionChange)="callDistrict()" formControlName="state" required [(ngModel)]="data.address.state">
+              <mat-option *ngFor="let state of addressData.states" [value]="state">
+                {{state.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>District</mat-label>
+            <mat-select (selectionChange)="callBlock()" formControlName="district" required [(ngModel)]="data.address.district">
+              <mat-option *ngFor="let district of addressData.district" [value]="district">
+                {{district.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Block</mat-label>
+            <mat-select (selectionChange)="callgramPanchayat()" formControlName="block" required [(ngModel)]="data.address.block">
+              <mat-option *ngFor="let block of addressData.blocks" [value]="block">
+                {{block.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Gram Panchayat</mat-label>
+            <mat-select (selectionChange)="callVillage()" formControlName="gramPanchayat" required [(ngModel)]="data.address.gramPanchayat">
+              <mat-option *ngFor="let gramPanchayat of addressData.gramPanchayat" [value]="gramPanchayat">
+                {{gramPanchayat.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Village</mat-label>
+            <mat-select formControlName="village" required [(ngModel)]="data.address.village">
+              <mat-option *ngFor="let village of addressData.village" [value]="village">
+                {{village.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Postalcode" formControlName="postalcode" required [(ngModel)]="data.address.postalcode">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Door No" formControlName="doorNo" required [(ngModel)]="data.address.doorNo">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Landmark" formControlName="landmark" required [(ngModel)]="data.address.landmark">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Street" formControlName="street" required [(ngModel)]="data.address.street">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="4" rowHeight="300px">
+          <mat-form-field class="serach-box">
+            <input matInput placeholder="Search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
+              type="text" class="form-control" #search [formControl]="searchControl"></mat-form-field>
+          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+          </agm-map>
+        </mat-grid-list>
+      <div style="width:100%;text-align:center">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext (click)="nextStep('person_info')">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="Contact_person_info_form">
+    <form [formGroup]="Contact_person_info_form">
+      <ng-template matStepLabel>Contact Person</ng-template>
+
+      <mat-grid-list cols="3" rowHeight="100px">
+
+
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Contact Person Name" required formControlName="name" [(ngModel)]="data.spoc.name">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Contact Person Designation" formControlName="designation" [(ngModel)]="data.spoc.designation">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Contact Person Email" required formControlName="email" [(ngModel)]="data.spoc.email">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Contact Person Fax" formControlName="fax" [(ngModel)]="data.spoc.fax">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Contact Person Number" formControlName="contact" [(ngModel)]="data.spoc.contact">
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Finance Person Name" required formControlName="financeName" [(ngModel)]="data.spoc.financeName">
+          </mat-form-field>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Finance Person Email" required formControlName="financeEmail" [(ngModel)]="data.spoc.financeEmail">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Finance Person Number" required formControlName="financeContact" [(ngModel)]="data.spoc.financeContact">
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <div style="width:100%;text-align:center">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext (click)="nextStep('bank_info')">Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="Bank_info_form">
+    <form [formGroup]="Bank_info_form">
+      <ng-template matStepLabel>Bank Information</ng-template>
+      <mat-grid-list cols="4" rowHeight="100px">
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Beneficiary Name" formControlName="beneficiaryName" required [(ngModel)]="data.bank.beneficiaryName">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Beneficiary Address" required formControlName="beneficiaryAddress" [(ngModel)]="data.bank.beneficiaryAddress">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Bank Name" required formControlName="bankName" [(ngModel)]="data.bank.bankName">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Bank Address" required formControlName="bankAddress" [(ngModel)]="data.bank.bankAddress">
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Bank A/C No." required formControlName="accNo" [(ngModel)]="data.bank.accNo">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Bank Account Type" formControlName="accountType" required [(ngModel)]="data.bank.accountType">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="IFSC Code" required formControlName="ifsc" [(ngModel)]="data.bank.ifsc">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="MICR No." formControlName="micrno" [(ngModel)]="data.bank.micrno">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Mode of payment" formControlName="modeOfPayment" [(ngModel)]="data.bank.modeOfPayment">
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+      <div style="width:100%;text-align:center">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext (click)="nextStep('docs')">Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Document Upload</ng-template>
+      <mat-grid-list cols="2" rowHeight="70px">
+        <mat-grid-tile>
+          <label for="singleFile" required class="doclabel">Incorporation certificate </label>
+          <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue"/>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-file-upload-queue #fileUploadQueue [fileAlias]="'uploadfile'" [httpUrl]="httpUrl">
+
+            <mat-file-upload (onUpload)="getFile($event)" [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
+          </mat-file-upload-queue>
+          <button (click)="upload(fileUploadQueue,'INCORP')">Upload</button>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="70px">
+          <mat-grid-tile>
+            <label for="singleFile2" required class="doclabel">GSTIN </label>
+            <input id="singleFile2" type="file" [fileUploadInputFor]="fileUploadQueue2"/>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-file-upload-queue #fileUploadQueue2 [fileAlias]="'uploadfile'" [httpUrl]="httpUrl">
+  
+              <mat-file-upload (onUpload)="getFile($event)" [file]="file" [id]="i" *ngFor="let file of fileUploadQueue2.files; let i = index"></mat-file-upload>
+            </mat-file-upload-queue>
+            <button (click)="upload(fileUploadQueue2,'GSTIN')">Upload</button>
+          </mat-grid-tile>
+  
+        </mat-grid-list>
+        <mat-grid-list cols="2" rowHeight="70px">
+            <mat-grid-tile>
+              <label for="singleFile3" required class="doclabel">PAN  </label>
+              <input id="singleFile3" type="file" [fileUploadInputFor]="fileUploadQueue3"/>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-file-upload-queue #fileUploadQueue3 [fileAlias]="'uploadfile'" [httpUrl]="httpUrl">
+    
+                <mat-file-upload (onUpload)="getFile($event)" [file]="file" [id]="i" *ngFor="let file of fileUploadQueue3.files; let i = index"></mat-file-upload>
+              </mat-file-upload-queue>
+              <button (click)="upload(fileUploadQueue3,'PAN')">Upload</button>
+            </mat-grid-tile>
+    
+          </mat-grid-list>
+          <mat-grid-list cols="2" rowHeight="70px">
+              <mat-grid-tile>
+                <label for="singleFile4" required class="doclabel">TIN </label>
+                <input id="singleFile4" type="file" [fileUploadInputFor]="fileUploadQueue4"/>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-file-upload-queue #fileUploadQueue4 [fileAlias]="'uploadfile'" [httpUrl]="httpUrl">
+      
+                  <mat-file-upload (onUpload)="getFile($event)" [file]="file" [id]="i" *ngFor="let file of fileUploadQueue4.files; let i = index"></mat-file-upload>
+                </mat-file-upload-queue>
+                <button (click)="upload(fileUploadQueue4,'Tin')">Upload</button>
+              </mat-grid-tile>
+      
+            </mat-grid-list>
+      <div style="width:100%;text-align:center">
+        <button mat-raised-button matStepperPrevious>Back</button>
+      </div>
+    </form>
+  </mat-step>
+
+</mat-horizontal-stepper>
+<div><button mat-raised-button color="accent" style ="float:right ; margin-top:-50px; margin-right:20px" (click)="addItem()">Save</button></div>

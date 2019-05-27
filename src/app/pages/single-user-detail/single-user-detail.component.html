@@ -1,0 +1,10 @@
+<agm-map [latitude]="lat" [longitude]="lng">
+    <agm-marker [latitude]="lat" [longitude]="lng">
+        <agm-info-window  [disableAutoPan]="true">
+            <strong class="info_cont">{{Selected_user_obj.name}}</strong>
+            <div  class="info_cont">Department: {{Selected_user_obj.department}}</div>
+            <span  class="info_cont">{{Selected_user_obj.email}}</span>
+
+          </agm-info-window>
+</agm-marker>
+  </agm-map>

@@ -1,0 +1,59 @@
+<div class="login_wr">
+
+
+
+  <div class="login_card">
+  
+    <div class="menu_div"> 
+  
+      <div class="mn">
+          <button mat-button [matMenuTriggerFor]="menu" ><mat-icon>language</mat-icon>Language</button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>Tamil</button>
+            <button mat-menu-item>English</button>
+          </mat-menu>
+  
+      </div>
+        
+    </div>
+    
+    
+  <div class="rr">
+      <mat-grid-list cols="1" rowHeight="85px">
+          <mat-grid-tile></mat-grid-tile>
+         
+          <mat-grid-tile  [colspan]="1" [rowspan]="2"><img class="logo_login" src="/assets/images/logo1.png"> </mat-grid-tile>
+  
+          <mat-grid-tile > <div style="display: flex">
+              <h1>Login</h1>
+          </div> </mat-grid-tile>
+  
+  
+  <form [formGroup]="signup_form" (ngSubmit)="onSubmit()">
+  
+      <mat-grid-tile colspan="1"> <mat-form-field color ="warn" appearance="outline">
+          <mat-label>User name</mat-label>
+          <input matInput placeholder="Placeholder">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field></mat-grid-tile>
+  
+        <mat-grid-tile>   <mat-form-field  color ="warn" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" placeholder="Placeholder">
+            <mat-icon matSuffix>lock</mat-icon>
+          </mat-form-field></mat-grid-tile>
+        <mat-grid-tile><button  mat-raised-button color="primary" class="btn_rad_clr">Login</button></mat-grid-tile>
+  </form>
+          
+            </mat-grid-list>
+  
+  </div>
+  
+       
+  
+  
+   
+  
+    </div>
+  </div>
+  

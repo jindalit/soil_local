@@ -1,0 +1,388 @@
+
+  <div class="purchase_wr">
+
+
+      <mat-card class="example-card cd1">
+          <mat-card-header>
+              <mat-card-title>Vendor Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+
+            <mat-grid-list [cols]="breakpoint"  (window:resize)="onResize($event)" rowHeight="70px" >
+
+              
+                <form >
+
+
+              <mat-grid-tile [colspan]="breakpoint" >
+                  <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                      <mat-select placeholder="Select Vendor" name="vendor" [(ngModel)]="vendor_id" >
+                        <mat-option  *ngFor="let vendor of Pur_vendor" [value]="vendor.uniqueId">{{vendor.companyName}}</mat-option>
+                        
+                      </mat-select>
+                    </mat-form-field>
+                  </mat-grid-tile>
+
+                  <mat-grid-tile [colspan]="breakpoint">
+                      <mat-form-field appearance="outline"  style="width:100%;margin:5px;top: -8px;position: absolute;">
+                          <mat-label>Shipping Address</mat-label>
+                          <textarea matInput placeholder="" cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="3"
+                          cdkAutosizeMaxRows="3" name="shipping_address" [(ngModel)]="shipping_address" >1600 Amphitheatre Pkwy</textarea>       
+                                         </mat-form-field>
+                      </mat-grid-tile>
+
+           
+
+
+                    </form>
+
+
+      </mat-grid-list>
+
+          </mat-card-content>
+    
+        </mat-card>
+
+        <mat-card class="example-card cd2">
+           
+            <mat-card-header >
+                      <mat-card-title>Add Product</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-grid-list [cols]="breakpoint"  (window:resize)="onResize($event)" rowHeight="60px" >
+    
+                  
+                    <form [formGroup]="Fill_purchase_table_form">
+    
+                  <mat-grid-tile [colspan]='breakpoint'>
+                      <mat-form-field appearance="outline"  style="width:100%;margin:5px"  >
+                          <mat-select placeholder="Product" formControlName="Pur_prod_name" name="dqd" (selectionChange)="selected_product()" [(ngModel)]="Model_Pur_prod_name">
+                             
+                            <mat-option  *ngFor="let procuct of Pur_products" [value]="procuct">{{procuct.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </mat-grid-tile>                      
+                  <mat-grid-tile>
+                      <mat-form-field appearance="outline"  style="width:100%;margin:5px" >
+                          <mat-label>HSN</mat-label>
+                          <input matInput formControlName="Pur_prod_hsn" [(ngModel)]="Model_Pur_prod_hsn" >                       
+                        </mat-form-field>
+                      </mat-grid-tile>
+
+
+                      <mat-grid-tile >
+                        <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                            <mat-label>Price</mat-label>
+                            <input matInput formControlName="Pur_prod_price"  [(ngModel)]="Model_Pur_prod_price" readonly>                       
+                          </mat-form-field>
+                        </mat-grid-tile>
+
+                                  
+
+                      <mat-grid-tile >
+                          <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                              <mat-select placeholder="Package type" formControlName="Pur_prod_pkg_type"  [(ngModel)]="Model_Pur_prod_pkg_type" >
+                                  <mat-option  disabled selected>Package type</mat-option>
+                                  <mat-option  *ngFor="let vendor of typeOfPackages.list" [value]="vendor.code">{{vendor.label}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </mat-grid-tile>
+
+                  <mat-grid-tile >
+                      <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                          <mat-label>Package Quantity</mat-label>
+                          <input matInput  formControlName="Pur_prod_pkg_qty"  [(ngModel)]="Model_Pur_prod_pkg_qty"  (input)="product_total_price()" >                       
+                        </mat-form-field>
+                      </mat-grid-tile>
+<!-- 
+
+                      <mat-grid-tile >
+                          <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                              <mat-label>Unit Quantity</mat-label>
+                              <input matInput  formControlName="Pur_prod_unit_qty"  [(ngModel)]="Model_Pur_prod_unit_qty" (input)="product_total_price()">                       
+                            </mat-form-field>
+                          </mat-grid-tile> -->
+
+
+                         
+                          <mat-grid-tile  >
+                              <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                                  <mat-select placeholder="GST Type" formControlName="Pur_prod_tax_type"  [(ngModel)]="Model_Pur_prod_tax_type" >
+                                      <mat-option  disabled selected>Tax type</mat-option>
+                                      <mat-option  *ngFor="let vendor of typeOfTaxes.list" [value]="vendor.code">{{vendor.label}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                              </mat-grid-tile>
+
+                              <mat-grid-tile >
+                                  <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                                      <!-- <mat-label>Tax Percentage</mat-label> -->
+
+                                      <!-- <input matInput  formControlName="Pur_prod_tax_percent"  [(ngModel)]="Model_Pur_prod_tax_percent" >   -->
+                                      <mat-select placeholder="Tax Percentage" formControlName="Pur_prod_tax_percent"  [(ngModel)]="Model_Pur_prod_tax_percent" (selectionChange)="product_total_price()">
+                                          <mat-option  disabled selected>Tax type</mat-option>
+                                          <mat-option  *ngFor="let vendor of gstValues.list" [value]="vendor.value">{{vendor.label}}</mat-option>
+                                        </mat-select>
+
+                                    </mat-form-field>
+                                  </mat-grid-tile>
+
+
+                                  <mat-grid-tile >
+                                      <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                                          <mat-label>SGST</mat-label>
+                                          <input matInput  formControlName="Pur_prod_tax_sgst"  [(ngModel)]="Model_Pur_prod_tax_sgst" >                       
+                                        </mat-form-field>
+                                      </mat-grid-tile>
+
+                                      <mat-grid-tile >
+                                          <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                                              <mat-label>CGST</mat-label>
+                                              <input matInput  formControlName="Pur_prod_tax_cgst"  [(ngModel)]="Model_Pur_prod_tax_cgst" >                       
+                                            </mat-form-field>
+                                          </mat-grid-tile>
+
+                                          <mat-grid-tile >
+                                              <mat-form-field appearance="outline"  style="width:100%;margin:5px">
+                                                  <mat-label>IGST</mat-label>
+                                                  <input matInput  formControlName="Pur_prod_tax_igst"  [(ngModel)]="Model_Pur_prod_tax_igst" >                       
+                                                </mat-form-field>
+                                              </mat-grid-tile>
+
+
+                    
+                        <mat-grid-tile  [colspan]="breakpoint">
+                          <button mat-raised-button color="accent"  (click)="buttonClicked()" *ngIf="btn_bool_sv" >Add</button>
+                          <button mat-raised-button color="accent"  (click)="Update_list(edit_list)" *ngIf="btn_bool_up">Update</button>
+                          </mat-grid-tile>
+      
+    
+                   
+ 
+    </form>
+    
+    
+          </mat-grid-list>
+              </mat-card-content>
+          </mat-card>
+
+          <mat-card class="example-card cd3">
+              <mat-card-header>
+                      <mat-card-title>Tax Information</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+    <div class="tax_info">
+                <mat-grid-list [cols]="3"  (window:resize)="onResize($event)" rowHeight="30px" >
+    
+                    <mat-grid-tile  colspan="2">
+                  <span>Amount Without tax:</span>
+</mat-grid-tile>
+
+<mat-grid-tile  colspan="1">
+    <span>{{Total_pur_WoT}}</span>
+</mat-grid-tile>
+
+
+<mat-grid-tile  colspan="2">
+    <span>Tax Amount :</span>
+</mat-grid-tile>
+
+<mat-grid-tile  colspan="1">
+<span>{{Total_tax}}</span>
+</mat-grid-tile>
+
+<mat-grid-tile  colspan="3">
+    <span class="hr_line"></span>
+    </mat-grid-tile>
+
+<mat-grid-tile  colspan="2">
+    <span>Total Amount :</span>
+</mat-grid-tile>
+
+<mat-grid-tile  colspan="1">
+<span>{{Total_pur}}</span>
+</mat-grid-tile>
+
+
+
+                  
+
+                  
+    
+    
+          </mat-grid-list>
+        </div>
+              </mat-card-content>
+        
+            </mat-card>
+
+ 
+        </div>
+
+
+  <mat-card class="example-card marg_top_20">
+     
+      <mat-card-content>
+<div class="container">
+   
+
+    <table>
+      <caption>Purchase Products</caption>
+      <thead>
+        <tr>
+            <th scope="col">Action</th>
+        <th scope="col">Product</th>
+        <th scope="col">Hsn</th>
+        <th scope="col">Price</th>
+        <th scope="col">Package Type</th>
+        <th scope="col">Package Quantity</th>
+        <!-- <th scope="col">Unit Quantity</th> -->
+        <th scope="col">Tax Type</th>
+        <th scope="col">Tax Percentage</th>
+        <th scope="col">SGST</th>
+        <th scope="col">CGST</th>
+        <th scope="col">IGST</th>
+        <th scope="col">Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows;let i=index">
+            <td data-label="Action"><mat-icon (click)="edit_list(row,i)" >edit</mat-icon><mat-icon (click)="Delete_pro_list(i)">delete</mat-icon></td>
+
+          <td scope="row" data-label="Product">{{row.product.name}}</td>
+          <td data-label="Hsn">{{row.hsn}}</td>
+          <td data-label="Price">{{row.price}}</td>
+          <td data-label="Package Type">{{row.packageType}}</td>
+          <td data-label="Package Quantity">{{row.quantity}}</td>
+          <!-- <td data-label="Unit Quantity">{{row.Tbl_unit_qty}}</td> -->
+          <td data-label="Tax Type">{{row.tax_Type}}</td>
+          <td data-label="Tax Percentage">{{row.tax_Percent}}</td>
+          <td data-label="SGST">{{row.sgst}}</td>
+          <td data-label="CGST">{{row.cgst}}</td>
+          <td data-label="IGST">{{row.igst}}</td>
+          <td data-label="IGST">{{row.totalAmount}}</td>
+        </tr>
+      </tbody>
+
+    </table>
+    <div>
+  
+
+
+    </div>
+    </div>
+    </mat-card-content>
+    </mat-card>
+
+    <div class="purchase_wr1">
+
+
+    <mat-card class="example-card marg_top_20 cd4">
+      <mat-card-header>
+      </mat-card-header>
+      <mat-card-content>
+      </mat-card-content>
+
+    </mat-card>
+
+
+    <mat-card class="example-card cd5 marg_top_20">
+        <mat-card-header>
+          <mat-card-title>Total Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+  <div >
+          <mat-grid-list [cols]="6"  (window:resize)="onResize($event)" rowHeight="30px" >
+  
+  
+             
+
+              <mat-grid-tile  colspan="2">
+                  <span class="span_txt_right" >SGST</span>
+                </mat-grid-tile>
+
+                  <mat-grid-tile  colspan="2">
+                      <span class="">CGST</span>
+            </mat-grid-tile>
+            <mat-grid-tile  colspan="2">
+                <span class="">IGST</span>
+            </mat-grid-tile>
+
+            
+     
+       
+
+  
+
+
+  <mat-grid-tile  colspan="2">
+      <span class="span_txt_right" >{{Pur_total_sgst}}</span>
+</mat-grid-tile>
+
+<mat-grid-tile  colspan="2">
+<span class="">{{Pur_total_cgst}}</span>
+</mat-grid-tile>
+
+
+<mat-grid-tile  colspan="2">
+<span class="">{{Pur_total_igst}}</span>
+</mat-grid-tile>
+  
+
+
+
+
+  
+              <mat-grid-tile  colspan="4">
+            <span class="span_txt_right">Amount Without tax:</span> 
+  </mat-grid-tile>
+  
+  <mat-grid-tile  colspan="2">
+  <span>{{Pur_total_amnt_wo_tax}}</span>
+  </mat-grid-tile>
+  
+  
+  <mat-grid-tile  colspan="4">
+  <span class="span_txt_right">Tax Amount :</span>
+  </mat-grid-tile>
+  
+  <mat-grid-tile  colspan="2">
+  <span>{{Pur_total_tax}}</span>
+  </mat-grid-tile>
+  
+  <mat-grid-tile  colspan="6">
+  <span class="hr_line"></span>
+  </mat-grid-tile>
+  
+  <mat-grid-tile  colspan="4">
+  <span class="span_txt_right">Total Amount :</span>
+  </mat-grid-tile>
+  
+  <mat-grid-tile  colspan="2">
+  <span>{{Pur_total_amnt}}</span>
+  </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+        </mat-card-content>
+  
+      </mat-card>
+
+      </div>
+
+
+      <div>
+
+
+        <mat-grid-list [cols]="breakpoint"  (window:resize)="onResize($event)" rowHeight="70px" >
+          <mat-grid-tile  [colspan]="breakpoint">
+            <button mat-raised-button color="accent"  (click)="Final_purchase_submission()" style="margin: 20px;">Submit</button>
+            </mat-grid-tile>
+            </mat-grid-list>
+            </div>
+
+
+
+
+    

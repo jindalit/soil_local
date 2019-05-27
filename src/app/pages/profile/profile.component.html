@@ -1,0 +1,173 @@
+<h2>User Profile</h2>
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="Basic_info_form">
+      <ng-template matStepLabel>Basic Details</ng-template>
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="User Name" formControlName="userName" required [(ngModel)]="data.user.userName"
+              readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Mobile" formControlName="mobile" required [(ngModel)]="data.user.mobile">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-form-field>
+            <input matInput placeholder="Name" formControlName="name" required [(ngModel)]="data.user.name">
+          </mat-form-field>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Status" formControlName="status" required [(ngModel)]="data.user.status">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Role" readonly formControlName="role" required [(ngModel)]="data.user.role">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Designation" readonly formControlName="designation"
+              [(ngModel)]="data.user.designation">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Department" readonly formControlName="department"
+              [(ngModel)]="data.user.department">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-radio-group (change)="onChangeVal($event)" name="gender">
+            <mat-radio-button value="Male" [checked]="data.user.gender == 'Male'">Male</mat-radio-button>
+            <mat-radio-button value="Female" [checked]="data.user.gender == 'Female'">Female</mat-radio-button>
+          </mat-radio-group>
+
+        </mat-grid-tile>
+
+
+      </mat-grid-list>
+      <div style="width:100%;text-align:center">
+
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="Address_info_form">
+    <form [formGroup]="Address_info_form">
+      <ng-template matStepLabel>Address</ng-template>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>State</mat-label>
+            <mat-select (selectionChange)="callDistrict()" formControlName="state" required
+              [(ngModel)]="data.user.address.state">
+              <mat-option *ngFor="let state of addressData.states" [value]="state.code">
+                {{state.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>District</mat-label>
+            <mat-select (selectionChange)="callBlock()" formControlName="district" required
+              [(ngModel)]="data.user.address.district">
+              <mat-option *ngFor="let district of addressData.district" [value]="district.code">
+                {{district.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Block</mat-label>
+            <mat-select (selectionChange)="callgramPanchayat()" formControlName="block" required
+              [(ngModel)]="data.user.address.block">
+              <mat-option *ngFor="let block of addressData.blocks" [value]="block.code">
+                {{block.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Street" formControlName="street" required
+              [(ngModel)]="data.user.address.street">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Gram Panchayat</mat-label>
+            <mat-select (selectionChange)="callVillage()" formControlName="gramPanchayat" required
+              [(ngModel)]="data.user.address.gramPanchayat">
+              <mat-option *ngFor="let gramPanchayat of addressData.gramPanchayat" [value]="gramPanchayat.code">
+                {{gramPanchayat.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Village</mat-label>
+            <mat-select formControlName="village" required [(ngModel)]="data.user.address.village">
+              <mat-option *ngFor="let village of addressData.village" [value]="village.code">
+                {{village.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Landmark" formControlName="landmark" required
+              [(ngModel)]="data.user.address.landmark">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Door No" formControlName="doorNo" required
+              [(ngModel)]="data.user.address.doorNo">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="300px">
+        <mat-form-field class="serach-box">
+          <input matInput placeholder="Search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
+            type="text" class="form-control" #search [formControl]="searchControl"></mat-form-field>
+        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+          <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+        </agm-map>
+      </mat-grid-list>
+
+      <div style="width:100%;text-align:center">
+        <button mat-raised-button matStepperPrevious>Back</button>
+      </div>
+    </form>
+  </mat-step>
+
+
+</mat-horizontal-stepper>
+<div><button mat-raised-button color="accent" style="float:right ; margin-top:-50px; margin-right:20px"
+    (click)="updateProfile()">Update Profile</button></div>

@@ -1,0 +1,31 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .example-container > * {
+    width: 100%;
+  }
+  .mat-step-header  {
+    background-color: rgb(229, 34, 255) !important;
+    border-radius: 60px;
+    margin-top: 10px;
+}
+.mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: red !important;
+}
+
+.mat-form-field-underline {
+/*change color of underline*/
+background-color: blue !important;
+} 
+
+.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: yellow !important;;
+} 
+
+mat-form-field{
+  width: 90% !important;
+}

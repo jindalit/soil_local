@@ -1,0 +1,68 @@
+
+import { UserService } from '../../services/user.service';
+import { Observable } from 'rxjs';
+import {DataSource} from '@angular/cdk/collections';
+import { User } from '../../shared/models/user.model';
+import { Component, OnInit,ViewChild  } from '@angular/core';
+import {ApiService} from '../../services/api.service';
+import { MatPaginator } from '@angular/material/paginator';
+import {PageEvent} from '@angular/material';
+import {Router} from "@angular/router";
+
+
+
+
+@Component({
+  selector: 'app-user-lists',
+  templateUrl: './user-lists.component.html',
+  styleUrls: ['./user-lists.component.scss']
+})
+
+export class UserListsComponent implements OnInit {
+User_lists_res:any;
+dataSource = new UserDataSource(this.userService);
+  displayedColumns = ['name','department','username', 'email', 'mobile','createdon'];
+
+  length = 100;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
+constructor(private Api_call:ApiService
+,private userService: UserService,
+private router: Router) 
+  { 
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+  }
+  ngAfterViewInit() {
+    // add ngAfterViewInit hook
+    }
+
+  ngOnInit() {
+  }
+
+goto_user_info(userdata){
+  console.log(userdata);
+  localStorage.setItem('selected_user',JSON.stringify(userdata));
+  this.router.navigate(['main/userinfo']);
+
+};
+
+utc_to_date (date){
+
+  return new Date(date).toLocaleDateString();
+}
+
+
+}
+
+export class UserDataSource extends DataSource<any> {
+  constructor(private userService: UserService) {
+    super();
+  }
+  connect(): Observable<User[]> {  
+    return this.userService.getUser();
+  }
+  disconnect() {}
+}

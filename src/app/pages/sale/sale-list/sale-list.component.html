@@ -1,0 +1,84 @@
+<mat-card  class="cd">
+
+  <mat-card-title class="cd_header">
+Sale List
+    </mat-card-title>
+    <hr style="border-color: #ffffff3d;">
+
+<div class="example-header" fxLayout="row">
+  &nbsp;
+  <!-- <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field> -->
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+  <mat-table  [dataSource]="dataSource" matSort>
+
+   
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="invoiceNo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #Invoice </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="invoiceNo"> {{datafounder(row.invoiceNo)}} </mat-cell>
+    </ng-container>
+
+     <!-- ID Column -->
+     <ng-container matColumnDef="createdOn">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="createdOn" (click)='goto_user_info(row)'> {{datafounder(utc_to_date(datafounder(row.createdOn)))}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="customerName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="customerName"> {{datafounder(row.customerName)}} </mat-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container matColumnDef="totalAmount">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
+      <mat-cell *matCellDef="let row"  data-label="totalAmount"> {{datafounder(row.finalAmount)}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="totalCGST">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> CGST </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{datafounder(user.totalCGST)}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="totalSGST">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> SGST </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{datafounder(user.totalSGST)}} </mat-cell>
+      </ng-container>
+   
+      <ng-container matColumnDef="totalIGST">
+          <mat-header-cell *matHeaderCellDef > IGST </mat-header-cell>
+          <mat-cell *matCellDef="let user" > {{user.totalIGST}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalTax">
+          <mat-header-cell *matHeaderCellDef > Total Tax </mat-header-cell>
+          <mat-cell *matCellDef="let user" > {{user.totalTax}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="transport">
+          <mat-header-cell *matHeaderCellDef > Transport Charges </mat-header-cell>
+          <mat-cell *matCellDef="let user" > {{user.transport.charges}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="finalAmount">
+          <mat-header-cell *matHeaderCellDef > Total Amount </mat-header-cell>
+          <mat-cell *matCellDef="let user" > {{user.totalAmountWithoutTax}} </mat-cell>
+        </ng-container>
+
+    
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+  </mat-card>

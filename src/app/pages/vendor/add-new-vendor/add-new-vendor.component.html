@@ -1,0 +1,287 @@
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="Vendor_info_form">
+      <ng-template matStepLabel>Vendor Information</ng-template>
+
+
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Company name" formControlName="companyName" required>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Branch" formControlName="branch" >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Date of Incorparation" formControlName="doi">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="nature of Business" formControlName="nob" required >
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+  
+
+     
+
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Fax" formControlName="fax" >
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Email" formControlName="email" required >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Website" formControlName="website" >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="GSTIN" formControlName="gstin" required >
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="PAN" formControlName="pan" required >
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="TIN" formControlName="tin" >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Service Tax registration No." formControlName="serviceTaxReg" >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Credit limit" formControlName="creditLimit" required>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="5" rowHeight="100px">
+          <div formGroupName="address">
+              <mat-grid-tile>
+                  <mat-form-field>
+                    <input matInput placeholder="Country" formControlName="countye" required >
+                  </mat-form-field>
+                </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="State" formControlName="state" required >
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="City" formControlName="city" required >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Postal Code" formControlName="postalcode" required >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder="Address" formControlName="location" required >
+          </mat-form-field>
+        </mat-grid-tile>
+      </div>
+      </mat-grid-list>
+      <mat-grid-list cols="4" rowHeight="100px">
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Credit Days" formControlName="creditDays" required>
+            </mat-form-field>
+          </mat-grid-tile>
+  
+        </mat-grid-list>
+      
+      <div>
+          <button mat-button  (click)="addItem()">sefte</button>
+
+        <button mat-button matStepperNext (click)="vendor_form()">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Contact Person</ng-template>
+
+      <mat-grid-list cols="4" rowHeight="100px">
+
+        
+
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Contact Person Name"  required>
+            </mat-form-field>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Contact Person Designation" required>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Contact Person Email" required>
+            </mat-form-field>
+          </mat-grid-tile>
+
+         
+
+        <mat-grid-list cols="4" rowHeight="100px">
+            <mat-grid-tile>
+                <mat-form-field>
+                  <input matInput placeholder="Contact Person Name (Finance)"  required>
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+
+            <mat-grid-tile>
+              <mat-form-field>
+                <input matInput placeholder="Contact Person Email (Finance)"  required>
+              </mat-form-field>
+            </mat-grid-tile>
+    
+           
+          </mat-grid-list>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>bank Information</ng-template>
+      <mat-grid-list cols="4" rowHeight="100px">
+
+          <mat-grid-tile>
+              <mat-form-field>
+                <input matInput placeholder="Beneficiary Name" formControlName="secondCtrl" required>
+              </mat-form-field>
+            </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Beneficiary Address"  required>
+            </mat-form-field>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Bank Name" required>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field>
+              <input matInput placeholder="Bank Address" required>
+            </mat-form-field>
+          </mat-grid-tile>
+         
+        </mat-grid-list>
+
+        <mat-grid-list cols="4" rowHeight="100px">
+            <mat-grid-tile>
+                <mat-form-field>
+                  <input matInput placeholder="Bank A/C No."  required>
+                </mat-form-field>
+              </mat-grid-tile>
+              
+            <mat-grid-tile>
+                <mat-form-field>
+                  <input matInput placeholder="Bank Account Type" formControlName="secondCtrl" required>
+                </mat-form-field>
+              </mat-grid-tile>
+  
+            <mat-grid-tile>
+              <mat-form-field>
+                <input matInput placeholder="Mode of Payment"  required>
+              </mat-form-field>
+            </mat-grid-tile>
+    
+            <mat-grid-tile>
+              <mat-form-field>
+                <input matInput placeholder="IFSC Code" required>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field>
+                <input matInput placeholder="MICR No." required>
+              </mat-form-field>
+            </mat-grid-tile>
+          
+          </mat-grid-list>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Document Upload</ng-template>
+      <mat-grid-list cols="4" rowHeight="100px">
+
+          <mat-grid-tile>
+              <mat-form-field>
+                  <select matNativeControl required>
+                      <option disabled>Please Select Document</option>
+                     
+                    </select>              </mat-form-field>
+            </mat-grid-tile>
+            </mat-grid-list>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

@@ -1,0 +1,53 @@
+$bt_clr:#00f9a6;
+
+.actions {
+    background: #2f296b;
+}
+
+.btn_rad_clr {
+    background: $bt_clr;
+    color: #000000;
+    margin:20px 50px 0 0;
+}
+.text-center {text-align: center}
+fieldset {
+    padding: 10px;
+    border-radius: 5px;
+
+    legend {
+        padding: 0 5px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #c2c3c4;
+    }
+}
+
+.editUser {
+    form>div {
+        display: block;
+        padding: 7px;
+        clear: both;
+    }
+    form input, form select{
+        line-height: 18px;
+        border-radius: 4px;
+        padding:3px;
+        font-size: 13px;
+    }
+    form select{
+        min-width: 178px;
+    }
+    label {
+        margin-right: 5px;
+        padding-right: 4px;
+        width:200px;
+        text-align: right;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .two-col{
+        width: 50%;
+        float: left;
+    }
+}

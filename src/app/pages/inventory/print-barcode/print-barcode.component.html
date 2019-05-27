@@ -1,0 +1,73 @@
+<form [formGroup]="barcode_form">
+  <mat-card class="prin_barcode" id="barcodePrint">
+    <mat-card-header class="update_inventory_title printHide">
+      <mat-card-title>Print BarCode</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="1" rowHeight="70px" class="printHide" style="margin-top:15px ">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select placeholder="Company Name" formControlName="companyName" [(ngModel)]="companyId">
+              <mat-option *ngFor="let company of company" [value]="company.uniqueId">
+                {{company.companyName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="70px" class="printHide">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select placeholder="Product Name" formControlName="productId" [(ngModel)]="productId">
+              <mat-option *ngFor="let product of products" [value]="product.uniqueId">
+                {{product.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select (selectionChange)="getBatches($event)" placeholder="Package Type" [(ngModel)]="packageType"
+              formControlName="packageType">
+              <mat-option *ngFor="let package of packages" [value]="package.code">{{package.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="outline" style="width:100%;margin:5px">
+              <mat-select (selectionChange)="getSeries($event)" placeholder="Baches" formControlName="batchIndex"
+                [(ngModel)]="batchIndex">
+                <mat-option *ngFor="let batch of batches;let i = index" [value]="i">
+                  {{batch.no}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile>
+          <ngx-barcode [bc-value]="batchNo" [bc-display-value]="true"></ngx-barcode>
+
+        </mat-grid-tile>
+        <mat-grid-tile class="printHide">
+          <mat-form-field>
+            <input matInput (blur)="sliceSeries()" placeholder="Start index" formControlName="startindex" [(ngModel)]="startindex">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="printHide">
+          <mat-form-field>
+            <input matInput  (blur)="sliceSeries()" placeholder="End index" formControlName="endindex" [(ngModel)]="endindex">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="printHide">
+          <button mat-raised-button class="printHide" style="float:right ;  margin-left:20px" color="accent"
+            (click)="printPage()">Print</button>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <mat-grid-list cols="6" rowHeight="100px" style="margin-top:10px ">
+
+        <mat-grid-tile *ngFor='let serial of serials'>
+          <ngx-barcode [bc-value]="serial.no" [bc-display-value]="true"></ngx-barcode>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+</form>

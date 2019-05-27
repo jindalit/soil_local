@@ -1,0 +1,84 @@
+.invoice {
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 1);
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 1);
+    min-height: 506px;
+    overflow-y: auto;
+    background: #424242;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    .inner {
+        font-size: 12px;
+
+        .invoice-head {
+            color: #94caf5;
+            font-size: 13px;
+        }
+
+        &>div {
+            border-bottom: 1px solid #777777;
+            width: 100%;
+            float: left;
+
+            &.billing-table {
+                .header>div {
+                    color: #94caf5;
+                    font-size: 13px;
+                }
+
+                &>div {
+                    padding: 0 12px;
+                    border-bottom: 1px solid #777777;
+                    float: left;
+                    width: calc(100% - 24px);
+
+                    &>div {
+                        padding: 3px 5px;
+                        width: calc(25% - 11px);
+                        float: left;
+                        border-right: 1px solid #777777;
+
+                        &.product-name {
+                            width: calc(50% - 11px);
+                        }
+                        &.note{
+                            width: calc(75% - 12px);
+                            border-right:0px;
+                            height: 30px;
+                            border-left: 1px solid #777777;
+                        }
+                    }
+                }
+            }
+        }
+
+        .heading {
+
+            text-align: center;
+            text-transform: uppercase;
+            line-height: 42px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .col-2 {
+            width: calc(48% - 1px);
+            float: left;
+            padding: 5px 1%;
+
+            p {
+                margin: 3px 0;
+            }
+
+        }
+    }
+
+    .border-right {
+        border-right: 1px solid #777777;
+    }
+    .print{
+        float: right;
+    margin-right: 20px;
+    font-size: 0.675em;
+    }
+}

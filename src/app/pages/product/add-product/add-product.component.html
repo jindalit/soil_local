@@ -1,0 +1,89 @@
+<form [formGroup]="add_product_form">
+  <mat-card class="add_product_card">
+    <mat-card-header class="add_product_title">
+      <mat-card-title>Add Product</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="2" rowHeight="70px" style="margin-top:15px ">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Product Name</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select placeholder="Product Category" formControlName="ProductCategory">
+              <mat-option disabled selected>Product Category</mat-option>
+              <mat-option *ngFor="let category of Prod_categories_list.list" [value]="category.code">{{category.label}}
+              </mat-option>
+
+            </mat-select>
+
+
+
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="desc">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>HSN Code</mat-label>
+            <input matInput formControlName="hsnCode">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Price</mat-label>
+            <input matInput formControlName="price" type="number">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select placeholder="TAX Type" formControlName="taxType">
+              <mat-option>Tax Type</mat-option>
+              <mat-option *ngFor="let taxtype of Prod_taxtype_list.list" [value]="taxtype.code">{{taxtype.label}}
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-select placeholder="TAX %" formControlName="taxPercentage">
+              <mat-option>Tax %</mat-option>
+              <mat-option *ngFor="let taxtype of Prod_taxvalues_list.list" [value]="taxtype.code">{{taxtype.label}}
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="outline" style="width:100%;margin:5px">
+            <mat-label>Product Image</mat-label>
+            <input matInput formControlName="productimage">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </mat-card-content>
+    <mat-card-footer>
+      <button mat-raised-button style="float:right ; margin-top:-50px; margin-right:20px"
+        (click)="Add_product_submission()" color="accent">Save</button>
+
+    </mat-card-footer>
+
+  </mat-card>
+</form>

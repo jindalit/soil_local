@@ -1,0 +1,26 @@
+<div class="changepassword_wrapper">
+<h3>Change Password</h3>
+
+  <div class="center">
+    <form ngNativeValidate>
+
+      <div>
+        <label>User Name</label>
+        <input type="text" [(ngModel)]="user.userName" name="name" autocomplete="off" readonly disabled>
+      </div>
+      <div>
+        <label>Old Password</label>
+        <input type="password" [(ngModel)]="user.password" autocomplete="off" name="password" required>
+      </div>
+      <div>
+        <label>New Password</label>
+        <input type="password" [(ngModel)]="user.newpassword" autocomplete="off" name="newpassword" required>
+      </div>
+      <div>
+          <label>Re Password</label>
+          <input type="password" [(ngModel)]="repassword" autocomplete="off" name="newpassword" required>
+        </div>
+      <div class="text-center"><button type="submit" mat-button color="primary" (click)="changePassword()" class="btn_rad_clr">Change Password</button></div>
+    </form>
+  </div>
+</div>

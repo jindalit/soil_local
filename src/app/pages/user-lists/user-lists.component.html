@@ -1,0 +1,26 @@
+<h3>User List</h3>
+<ag-grid-angular style="width:98%; height:430px;" class="ag-theme-dark" [suppressPaginationPanel]="true"
+    [rowData]="rowData" [columnDefs]="columnDefs" [gridOptions]="gridOptions" [paginationPageSize]="pageObj.limit">
+</ag-grid-angular>
+<div class="paging-panel">
+    <span class="page-size">
+        <label>Page Size: </label>
+        <select [(ngModel)]="pageObj.limit" (change)="updatePageSize()">
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+        </select>
+    </span>
+    <span class="paging-row-summary-panel">
+        <span>{{((pageObj.pageNum - 1) * pageObj.limit) + 1}}</span> to <span>{{pageObj.pageNum * pageObj.limit}}</span>
+        of <span>{{pageObj.count | number}}</span>
+    </span>
+    <span class="paging-page-summary-panel">
+        <button type="button" class="paging-button" (click)="changePage('prev')"
+            [disabled]="pageObj.pageNum == 1">Previous</button>
+        Page <span>{{pageObj.pageNum}}</span> of <span>{{pageObj.totalPage | number}}</span>
+        <button type="button" class="paging-button" (click)="changePage('next')"
+            [disabled]="pageObj.pageNum == pageObj.totalPage">Next</button>
+    </span>
+</div>

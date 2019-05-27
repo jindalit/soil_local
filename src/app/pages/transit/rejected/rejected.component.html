@@ -1,0 +1,88 @@
+<mat-card  class="cd">
+
+    <mat-card-title class="cd_header">
+  Rejected  
+      </mat-card-title>
+      <hr style="border-color: #ffffff3d;">
+
+  <div class="example-header" fxLayout="row">
+    &nbsp;
+    <!-- <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field> -->
+  </div>
+  
+  <div class="example-container mat-elevation-z8">
+  
+    <mat-table  [dataSource]="dataSource" matSort>
+  
+     
+  
+      <!-- Progress Column -->
+      <ng-container matColumnDef="invoiceNo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> #Invoice </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="invoiceNo"> {{datafounder(row.invoiceNo)}} </mat-cell>
+      </ng-container>
+  
+       <!-- ID Column -->
+       <ng-container matColumnDef="createdOn">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="createdOn" (click)='goto_user_info(row)'> {{datafounder(utc_to_date(datafounder(row.createdOn)))}} </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="customerName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="customerName"> {{datafounder(row.customerName)}} </mat-cell>
+      </ng-container>
+  
+      <!-- Color Column -->
+      <ng-container matColumnDef="address">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
+        <mat-cell *matCellDef="let row"  data-label="address"> {{datafounder(row.address.shipping.address.street | json)}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="saleProducts">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> No of Products </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{datafounder(user.saleProducts.length)}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> status </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{datafounder(user.status)}} </mat-cell>
+        </ng-container>
+     
+        <ng-container matColumnDef="transport.name">
+            <mat-header-cell *matHeaderCellDef > transport name </mat-header-cell>
+            <mat-cell *matCellDef="let user" > {{user.transport.name}} </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="spocName">
+              <mat-header-cell *matHeaderCellDef > Driver name </mat-header-cell>
+              <mat-cell *matCellDef="let user" > {{user.transport.spocName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="spocNumber">
+                <mat-header-cell *matHeaderCellDef > Driver number </mat-header-cell>
+                <mat-cell *matCellDef="let user" > {{user.transport.spocNumber}} </mat-cell>
+              </ng-container>
+  
+              <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                <mat-cell *matCellDef="let user" >  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>View Pro Forma Invoice</button>
+                    
+                  </mat-menu> </mat-cell>
+              </ng-container>
+  
+      
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+    </mat-card>
+  

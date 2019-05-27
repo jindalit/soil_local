@@ -1,0 +1,46 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+// background: #3d3780;
+
+
+
+$dark-primary: mat-palette($mat-purple,50);
+$dark-accent: mat-palette($mat-purple,A200, A100, A400);
+$dark-warn: mat-palette($mat-red,500);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$card:#3D3780;
+
+@include angular-material-theme($dark-theme);
+
+  
+
+.mat-drawer {
+    background-color: #3d3780;
+    color: white;
+}
+
+.sidenav-container{
+    background: #2f296b;
+}
+.mat-toolbar.mat-primary{
+    color: white;
+
+}
+
+
+
+
+// Our dark theme
+.light-theme {
+
+    $primary: mat-palette($mat-grey,50);
+    $accent: mat-palette($mat-green);
+    $warn: mat-palette($mat-red,500);
+    $theme: mat-light-theme($primary, $accent, $warn);
+    color: mat-contrast($accent, default);
+    @include angular-material-theme($theme);
+    $card:#3D3780;
+
+   
+}

@@ -1,0 +1,282 @@
+/* You can add global styles to this file, and also import other style files */
+@import './theme.scss';
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url('https://fonts.googleapis.com/css?family=Exo');
+@import url('https://use.fontawesome.com/releases/v5.8.1/css/all.css');
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-dark.css";
+
+
+body {
+    margin: 0px;
+    font-family: 'exo';
+
+}
+
+.nav_wr {
+    height: 100vh;
+
+    .mat-list-item-content {
+        padding: 0px 10px !important;
+        font-family: 'exo';
+
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 0px 0px !important;
+
+    }
+}
+
+.white_mat {
+    background: #fff;
+    color: #000;
+}
+
+.mat-form-field-flex>.mat-form-field-infix {
+    padding: 0.4em 0px !important;
+}
+
+.mat-form-field-label-wrapper {
+    top: -1.5em;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(.75);
+    width: 133.33333%;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: .5em 2em !important;
+}
+
+// .mat-grid-tile{
+//   height: calc(100px) !important;
+
+// }
+
+.font_13 {
+    font-size: 13px !important;
+}
+
+
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+
+    //CSS
+
+}
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+    //CSS
+
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    //CSS
+
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+    //CSS
+
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    //CSS
+
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+    //CSS
+
+}
+
+mat-file-upload-queue {
+    width: 100%;
+
+    .example-section>span,
+    .example-section>a,
+    .mat-icon,
+    .mat-raised-button {
+        display: none;
+    }
+}
+
+.custom-date-picker {
+    svg {
+        display: none;
+    }
+
+    button {
+        background: url("assets/images/calender.png") no-repeat;
+        background-size: 100%;
+        border-radius: 0px;
+    }
+}
+
+.serach-box .mat-form-field-infix {
+    width: 500px;
+}
+
+agm-map {
+    height: 200px;
+}
+
+.ag-theme-dark {
+    color: #fff;
+    background: #030e12;
+
+    .ag-root {
+        border: 1px solid #5b6974;
+    }
+
+    .ag-header {
+        background-color: #0a3758;
+        color: #fff;
+
+        .ag-header-cell {
+            background: #0A3758;
+
+            .ag-header-cell-text {
+                font-weight: bold;
+
+            }
+        }
+    }
+
+    .ag-cell {
+        line-height: 32px;
+    }
+
+    .ag-row-even {
+
+        background: #184365;
+
+    }
+
+    .ag-paging-panel {
+        height: auto;
+        line-height: 32px;
+    }
+
+    .ag-row-odd {
+
+        background:
+            #0A3758;
+
+    }
+
+    .ag-floating-filter-body {
+        border: none;
+
+        padding:
+            3px 1px;
+
+        margin-right:
+            0;
+
+        input {
+            border: 0px;
+        }
+    }
+}
+
+.light-theme .invoice {
+    background: #ffffff !important;
+}
+
+@media print {
+
+    mat-sidenav,
+    .print,
+    .nav_wr>div:first-child,
+    .printHide {
+        display: none !important;
+    }
+
+    mat-sidenav-content {
+        width: 100% !important;
+        margin: 0 auto !important;
+        margin-left: 0px !important;
+        color: #000000 !important
+    }
+
+    @page {
+        size: A4 landscape;
+    }
+
+    #barcodePrint {
+        width: auto;
+        height: auto;
+        overflow: visible;
+    }
+
+    .sid_cont_layout,
+    .mat-card,
+    .mat-sidenav-content {
+        margin: 0;
+        padding: 0
+    }
+}
+
+ngx-barcode svg {
+    width: 150px;
+    height: 90px;
+}
+
+.paging-panel {
+    width: calc(98% - 24px);
+    text-align: right;
+    align-items: center;
+    border-top: 1px solid darkgrey;
+    color: #cccccc;
+    display: flex;
+    height: 25px;
+    justify-content: flex-end;
+    padding: 1px 12px;
+    background: #302e2e;
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+
+    button,
+    select {
+        margin: 0 5px;
+    }
+}

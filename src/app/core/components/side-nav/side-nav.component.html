@@ -1,0 +1,324 @@
+<div class="nav_wr" [ngClass]="{'light-theme': isDarkTheme | async}">
+  <div style="
+       position: fixed;
+    z-index: 24;
+    width: 100%;
+    background-color: inherit">
+
+
+    <mat-toolbar color="primary" fxLayoutAlign="center center">
+
+      <mat-toolbar-row>
+        <span class="logo_span" color="warn">
+          <img src="assets/images/logo.png">
+        </span>
+        <span class="head_let">
+          <h1>Soil Protection</h1>
+        </span>
+
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async">
+          <mat-icon aria-label="Side nav toggle icon"> menu
+          </mat-icon>
+        </button>
+        <span fxFlex></span>
+
+        <mat-slide-toggle end [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)"> <span
+            class="font_13"> {{ 'theme' | translate }}</span></mat-slide-toggle>
+        &nbsp;
+
+
+        <div class="menu_div">
+
+          <div class="mn">
+            <button mat-button [matMenuTriggerFor]="lang" matTooltip="Choose Language">
+              <mat-icon>language</mat-icon><span class="warn font_13">{{ 'language' | translate }}</span>
+            </button>
+            <mat-menu #lang="matMenu">
+
+              <button (click)="setLang('tn')" mat-menu-item>{{ 'tamil' | translate }}</button>
+              <button (click)="setLang('en')" mat-menu-item>{{ 'english' | translate }}</button>
+              <button (click)="setLang('hi')" mat-menu-item>{{ 'hindi' | translate }}</button>
+
+            </mat-menu>
+
+          </div>
+
+        </div>
+        <div class="profiel_container">
+          <div class="user_cir">
+
+          </div>
+          <button mat-button [matMenuTriggerFor]="menu">{{user_obj.user.name}}</button>
+          <mat-menu #menu="matMenu" class="my_nav_list">
+
+            <button mat-menu-item><a routerLink='/main/profile'>{{ 'profile' | translate }}</a></button>
+            <button mat-menu-item (click)="changepassword()">{{ 'changepassword' | translate }}</button>
+            <button mat-menu-item (click)='logout()'>{{ 'logout' | translate }}</button>
+          </mat-menu>
+
+        </div>
+
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+
+  <mat-sidenav-container color="primary" class="sidenav-container">
+
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="!(isHandset$ | async)">
+      <mat-nav-list>
+        <a mat-list-item routerLink='/main/home'><img src="../../../../assets/images/dashboard.png" /><span
+            class="menu_name">{{ 'dashboard' | translate }}
+
+
+          </span></a>
+        <!-- <a mat-list-item href="#"><mat-icon>autorenew</mat-icon><span class="menu_name">Change Password</span></a> -->
+
+
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/um.png" /> {{ 'usermanagement' | translate }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/userlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'users' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/newuserlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'new_users' | translate }}</span>
+            </a>
+
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>peoples</mat-icon>{{ 'master' | translate }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/addulb'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'addULB' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/ulb-list'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'ULB List' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/addfpo'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'addFPO' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/fpo-list'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'FPO List' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/addtrans'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'addTransportation' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/transit-list'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'Transit List' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/addTestLab'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'addTestLab' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/lab-list'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'Test Lab List' | translate }}</span>
+            </a>
+
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>peoples</mat-icon>{{ 'management' | translate }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/test-Certificate'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'testCertificate' | translate }}</span>
+            </a>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/product.png" /> {{ 'productmgmt' | translate }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/addnewproduct'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'addproduct' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink='/main/productlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">{{ 'productlist' | translate }}</span>
+            </a>
+
+
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+
+        <!-- <mat-accordion mat-list-item >
+              <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+                <mat-expansion-panel-header >
+                  <mat-panel-title>
+                     <mat-icon>peoples</mat-icon>{{ 'purchasemgmt' | translate }}               
+                     </mat-panel-title>
+                </mat-expansion-panel-header>
+                    <a mat-list-item routerLink='/main/createpurchase'><mat-icon>person</mat-icon><span class="menu_name">{{ 'newpurchase' | translate }}</span></a>
+                    <a mat-list-item routerLink='/main/createpurchase'><mat-icon>person</mat-icon><span class="menu_name">{{ 'purchaselist' | translate }}</span></a>
+  
+          
+              </mat-expansion-panel>
+              <mat-expansion-panel (opened)="panelOpenState = true"
+                                   (closed)="panelOpenState = false">
+        
+            
+              </mat-expansion-panel>
+            </mat-accordion> -->
+
+        <!-- 
+            <mat-accordion mat-list-item >
+              <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+                <mat-expansion-panel-header >
+                  <mat-panel-title>
+                     <mat-icon>peoples</mat-icon>Vendor Management               
+                     </mat-panel-title>
+                </mat-expansion-panel-header>
+                    <a mat-list-item routerLink='/main/addnewvendor'><mat-icon>person</mat-icon><span class="menu_name">Add Vendor</span></a>
+                    <a mat-list-item routerLink='/main/addnewvendor'><mat-icon>person</mat-icon><span class="menu_name">Vendor List</span></a>
+  
+          
+              </mat-expansion-panel>
+              <mat-expansion-panel (opened)="panelOpenState = true"
+                                   (closed)="panelOpenState = false">
+        
+            
+              </mat-expansion-panel>
+            </mat-accordion> -->
+
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/inventory.png" /> Inventory Management
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <a mat-list-item routerLink='/main/inventoryList'>
+              <mat-icon>person</mat-icon><span class="menu_name">Inventory List</span>
+            </a>
+            <a mat-list-item routerLink='/main/update-inventory'>
+              <mat-icon>person</mat-icon><span class="menu_name">Update Inventory</span>
+            </a>
+            <a mat-list-item routerLink='/main/print-barcode'>
+              <mat-icon>person</mat-icon><span class="menu_name">Print Barcode</span>
+            </a>
+
+
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/sale.png" /> Sale
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/create_sale'>
+              <mat-icon>person</mat-icon><span class="menu_name">Create Sale</span>
+            </a>
+            <a mat-list-item routerLink='/main/salelist'>
+              <mat-icon>person</mat-icon><span class="menu_name">Sale List</span>
+            </a>
+
+
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/tax.png" /> Tax
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/outputtax'>
+              <mat-icon>person</mat-icon><span class="menu_name">Output Tax</span>
+            </a>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"></mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/payment.png" /> Payment</mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/overdue'>
+              <mat-icon>person</mat-icon><span class="menu_name">Over Due</span>
+            </a>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"></mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion mat-list-item>
+          <mat-expansion-panel [ngClass]="{'white_mat': isDarkTheme | async}">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <img src="../../../../assets/images/transit.png" /> Transit</mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink='/main/pendingtransitlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">Pending</span>
+            </a>
+            <a mat-list-item routerLink='/main/ontransitlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">On Transit</span>
+            </a>
+            <a mat-list-item routerLink='/main/delivtransitlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">Delivered</span>
+            </a>
+            <a mat-list-item routerLink='/main/rejecttransitlist'>
+              <mat-icon>person</mat-icon><span class="menu_name">Rejected</span>
+            </a>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"></mat-expansion-panel>
+        </mat-accordion>
+
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div [ngClass]="{'white_mat': isDarkTheme | async}" class="sid_cont_layout">
+        <router-outlet></router-outlet>
+
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
